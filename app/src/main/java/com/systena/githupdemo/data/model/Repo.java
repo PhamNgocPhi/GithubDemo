@@ -1,6 +1,6 @@
 package com.systena.githupdemo.data.model;
 
-import com.systena.githupdemo.util.Define;
+import com.systena.githupdemo.util.common.Define;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

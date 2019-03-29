@@ -8,13 +8,15 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.systena.githupdemo.GithubApplication;
+
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import dagger.android.support.DaggerAppCompatActivity;
 
-public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppCompatActivity {
+public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppCompatActivity{
 
     protected T binding;
 
@@ -29,7 +31,18 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppC
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, layoutRes());
+        ObserveRxBus();
     }
+
+    private void ObserveRxBus() {
+        ((GithubApplication) getApplication())
+                .getRxBus()
+                .toObservable()
+                .subscribe(data -> {
+
+                });
+    }
+
 
     // hide key board when click out side
     @Override

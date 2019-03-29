@@ -3,7 +3,7 @@ package com.systena.githupdemo.di.module;
 import android.content.Context;
 
 import com.systena.githupdemo.data.AppDatabase;
-import com.systena.githupdemo.util.Define;
+import com.systena.githupdemo.util.common.Define;
 
 import javax.inject.Singleton;
 
