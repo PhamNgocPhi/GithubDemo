@@ -22,11 +22,24 @@ public class NetworkConnectionInterceptor implements Interceptor {
     }
 
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(Chain chain) {
         Request request = chain.request();
         if (!DeviceUtil.isInternetAvailable(context)) {
             rxBus.send(Define.Network.ErrorCode.LOST_INTERNET);
+        } else {
+            try {
+                Response response = chain.proceed(request);
+                switch (response.code()) {
+                    case 503:
+                        rxBus.send(Define.Network.ErrorCode.NO_RESPONSE);
+                        break;
+                }
+                return response;
+
+            } catch (IOException e) {
+                rxBus.send(Define.Network.ErrorCode.NO_RESPONSE);
+            }
         }
-        return chain.proceed(request);
+        return null;
     }
 }

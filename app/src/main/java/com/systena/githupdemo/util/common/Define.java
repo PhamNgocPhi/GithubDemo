@@ -37,6 +37,7 @@ public class Define {
 
         public class ErrorCode {
             public static final String LOST_INTERNET = "E1000";
+            public static final String NO_RESPONSE = "E1001";
         }
     }
 }

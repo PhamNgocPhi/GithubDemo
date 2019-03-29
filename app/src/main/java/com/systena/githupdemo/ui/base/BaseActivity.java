@@ -15,17 +15,21 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import dagger.android.support.DaggerAppCompatActivity;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppCompatActivity{
+public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppCompatActivity {
+
+    private final long CLICK_TIME_INTERVAL = 600;
 
     protected T binding;
 
     private View focusedViewOnActionDown;
     private boolean touchWasInsideFocusedView, hasMove;
     private float rawX, rawY;
+    private Disposable disposable;
+    public static long lastClickTime = System.currentTimeMillis();
 
     @LayoutRes
     protected abstract int layoutRes();
@@ -38,7 +42,7 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppC
     }
 
     private void ObserveRxBus() {
-        ((GithubApplication) getApplication())
+        disposable = ((GithubApplication) getApplication())
                 .getRxBus()
                 .toObservable()
                 .subscribeOn(Schedulers.io())
@@ -48,6 +52,22 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppC
                 });
     }
 
+    protected boolean isDuplicateClick() {
+        long now = System.currentTimeMillis();
+        if (now - lastClickTime < CLICK_TIME_INTERVAL) {
+            return true;
+        }
+        lastClickTime = now;
+        return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
 
     // hide key board when click out side
     @Override

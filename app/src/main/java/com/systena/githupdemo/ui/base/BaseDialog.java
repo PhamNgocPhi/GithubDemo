@@ -22,6 +22,7 @@ public abstract class BaseDialog<B extends ViewDataBinding> extends DialogFragme
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setCancelable(false);
 
     }
 
