@@ -15,6 +15,9 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import dagger.android.support.DaggerAppCompatActivity;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppCompatActivity{
 
@@ -38,6 +41,8 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppC
         ((GithubApplication) getApplication())
                 .getRxBus()
                 .toObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
 
                 });
