@@ -8,7 +8,15 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.systena.githupdemo.GithubApplication;
+import com.systena.githupdemo.data.model.ApiObjectResponse;
+import com.systena.githupdemo.data.model.RequestError;
+import com.systena.githupdemo.util.common.Define;
+
+import java.io.IOException;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
@@ -18,6 +26,7 @@ import dagger.android.support.DaggerAppCompatActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.HttpException;
 
 public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppCompatActivity {
 
@@ -29,7 +38,7 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppC
     private boolean touchWasInsideFocusedView, hasMove;
     private float rawX, rawY;
     private Disposable disposable;
-    public static long lastClickTime = System.currentTimeMillis();
+    public long lastClickTime = System.currentTimeMillis();
 
     @LayoutRes
     protected abstract int layoutRes();
@@ -59,6 +68,41 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppC
         }
         lastClickTime = now;
         return false;
+    }
+
+    protected RequestError handleThrowable(Throwable throwable, boolean isShowDialog) {
+        RequestError requestError = new RequestError();
+        if (throwable instanceof IOException) {
+            requestError.setErrorCode(Define.Network.ErrorCode.LOST_INTERNET);
+            requestError.setErrorMessage(throwable.getMessage());
+        } else if (throwable instanceof HttpException) {
+            HttpException httpException = (HttpException) throwable;
+            try {
+                String errorBody = httpException.response().errorBody().string();
+                Gson gson = new GsonBuilder().create();
+                ApiObjectResponse apiResponse = gson.fromJson(errorBody, ApiObjectResponse.class);
+                if (apiResponse != null && apiResponse.getRequestError() != null) {
+                    requestError = apiResponse.getRequestError();
+                } else {
+                    requestError.setErrorCode(String.valueOf(httpException.code()));
+                    requestError.setErrorMessage("リクエストタイムアウト。");
+                }
+            } catch (IOException e) {
+                requestError.setErrorCode(Define.Network.ErrorCode.UNKNOWN_ERROR);
+                requestError.setErrorMessage("リクエストタイムアウト。");
+            } catch (IllegalStateException e) {
+                requestError.setErrorCode(Define.Network.ErrorCode.UNKNOWN_ERROR);
+                requestError.setErrorMessage("リクエストタイムアウト。");
+            } catch (JsonSyntaxException e) {
+                requestError.setErrorCode(Define.Network.ErrorCode.UNKNOWN_ERROR);
+                requestError.setErrorMessage("リクエストタイムアウト。");
+            } catch (NullPointerException e) {
+                requestError.setErrorCode(Define.Network.ErrorCode.UNKNOWN_ERROR);
+                requestError.setErrorMessage("リクエストタイムアウト。");
+            }
+        }
+
+        return requestError;
     }
 
     @Override
