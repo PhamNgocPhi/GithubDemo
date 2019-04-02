@@ -1,4 +1,4 @@
-package com.systena.githupdemo.util;
+package com.systena.githupdemo.util.common;
 
 public class Define {
     public class ResponseStatus {
@@ -29,6 +29,27 @@ public class Define {
             public static final String FULL_NAME = "full_name";
             public static final String DESCRIPTION = "description";
             public static final String CONTRIBUTORS_URL = "contributors_url";
+        }
+    }
+
+    public class Network {
+        public static final long DEFAULT_TIMEOUT = 60L;
+
+        public class ErrorCode {
+            public static final String LOST_INTERNET = "E1000";
+            public static final String NO_RESPONSE = "E1001";
+            public static final String UNKNOWN_ERROR = "E1002";
+            public static final String TIME_OUT = "E1003";
+        }
+
+        public class BaseResponse {
+            public static final String SUCCESS = "success";
+            public static final String DATA = "data";
+            public static final String PAGE = "page";
+            public static final String ERROR = "error";
+            public static final String ERROR_CODE = "error_code";
+            public static final String ERROR_MESSAGE = "error_message";
+
         }
     }
 }

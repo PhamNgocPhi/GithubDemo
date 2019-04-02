@@ -1,6 +1,6 @@
 package com.systena.githupdemo.data.base;
 
-import com.systena.githupdemo.util.Define;
+import com.systena.githupdemo.util.common.Define;
 
 import androidx.annotation.NonNull;
 import io.reactivex.annotations.Nullable;

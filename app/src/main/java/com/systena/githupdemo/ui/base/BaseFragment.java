@@ -6,11 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.systena.githupdemo.ui.NavigationManager;
+
 import javax.inject.Inject;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,7 +21,8 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFrag
 
     protected T binding;
 
-    private AppCompatActivity activity;
+    private BaseActivity activity;
+    private NavigationManager navigationManager;
 
     @Inject
     protected ViewModelProvider.Factory viewModelFactory;
@@ -38,7 +40,8 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFrag
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        activity = (AppCompatActivity) context;
+        activity = (BaseActivity) context;
+        navigationManager = activity.getNavigationManager();
     }
 
     @Override
@@ -47,7 +50,11 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFrag
         activity = null;
     }
 
-    public AppCompatActivity getBaseActivity() {
+    public BaseActivity getBaseActivity() {
         return activity;
+    }
+
+    protected boolean isDuplicateClick() {
+        return activity.isDuplicateClick();
     }
 }
