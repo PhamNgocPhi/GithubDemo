@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">GithupDemo</string>
+    <string name="app_name">ToursApp</string>
+
+    //splash
+    <string name="splash_quote">Travel makes one modest. You see what a tiny place you occupy in the world.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
