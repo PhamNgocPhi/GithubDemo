@@ -14,6 +14,7 @@ import com.google.gson.JsonSyntaxException;
 import com.systena.githupdemo.GithubApplication;
 import com.systena.githupdemo.data.model.ApiObjectResponse;
 import com.systena.githupdemo.data.model.RequestError;
+import com.systena.githupdemo.ui.NavigationManager;
 import com.systena.githupdemo.util.common.Define;
 
 import java.io.IOException;
@@ -42,6 +43,8 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppC
 
     @LayoutRes
     protected abstract int layoutRes();
+
+    protected abstract NavigationManager getNavigationManager();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

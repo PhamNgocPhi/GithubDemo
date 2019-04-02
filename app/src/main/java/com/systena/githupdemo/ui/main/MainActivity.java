@@ -4,7 +4,9 @@ import android.os.Bundle;
 
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.databinding.ActivityMainBinding;
+import com.systena.githupdemo.ui.NavigationManager;
 import com.systena.githupdemo.ui.base.BaseActivity;
+import com.systena.githupdemo.ui.home.HomeFragment;
 
 import javax.inject.Inject;
 
@@ -15,6 +17,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     private MainViewModel mainViewModel;
 
+    private NavigationManager navigationManager;
+
     @Inject
     protected ViewModelProvider.Factory viewModelFactory;
 
@@ -24,9 +28,15 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     }
 
     @Override
+    protected NavigationManager getNavigationManager() {
+        return navigationManager;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
+        navigationManager = new NavigationManager(this.getSupportFragmentManager(), R.id.rlMain);
+        navigationManager.openAsRoot(HomeFragment.class);
     }
 }

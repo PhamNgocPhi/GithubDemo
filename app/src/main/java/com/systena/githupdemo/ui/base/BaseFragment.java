@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.systena.githupdemo.ui.NavigationManager;
+
 import javax.inject.Inject;
 
 import androidx.annotation.LayoutRes;
@@ -20,6 +22,7 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFrag
     protected T binding;
 
     private BaseActivity activity;
+    private NavigationManager navigationManager;
 
     @Inject
     protected ViewModelProvider.Factory viewModelFactory;
@@ -38,6 +41,7 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFrag
     public void onAttach(Context context) {
         super.onAttach(context);
         activity = (BaseActivity) context;
+        navigationManager = activity.getNavigationManager();
     }
 
     @Override
