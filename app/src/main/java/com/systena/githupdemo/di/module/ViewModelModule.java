@@ -3,6 +3,7 @@ package com.systena.githupdemo.di.module;
 import com.systena.githupdemo.di.util.ViewModelFactory;
 import com.systena.githupdemo.di.util.ViewModelKey;
 import com.systena.githupdemo.ui.home.HomeViewModel;
+import com.systena.githupdemo.ui.login.LoginViewModel;
 import com.systena.githupdemo.ui.main.MainViewModel;
 import com.systena.githupdemo.ui.splash.SplashViewModel;
 
@@ -29,6 +30,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SplashViewModel.class)
     abstract ViewModel bindSplashViewModel(SplashViewModel splashViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LoginViewModel.class)
+    abstract ViewModel bindLoginViewModel(LoginViewModel loginViewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);

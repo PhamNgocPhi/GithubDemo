@@ -13,12 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.systena.githupdemo.R;
+import com.systena.githupdemo.databinding.FragmentSplashBinding;
 import com.systena.githupdemo.ui.base.BaseFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SplashFragment extends BaseFragment {
+public class SplashFragment extends BaseFragment<FragmentSplashBinding> {
 
     private SplashViewModel viewModel;
 

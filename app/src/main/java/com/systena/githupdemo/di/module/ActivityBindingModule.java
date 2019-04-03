@@ -1,6 +1,7 @@
 package com.systena.githupdemo.di.module;
 
 import com.systena.githupdemo.ui.home.HomeFragment;
+import com.systena.githupdemo.ui.login.LoginFragment;
 import com.systena.githupdemo.ui.main.MainActivity;
 import com.systena.githupdemo.ui.splash.SplashFragment;
 
@@ -18,5 +19,8 @@ public abstract class ActivityBindingModule {
 
     @ContributesAndroidInjector
     abstract SplashFragment bindSplashFragment();
+
+    @ContributesAndroidInjector
+    abstract LoginFragment bindLoginFragment();
 
 }

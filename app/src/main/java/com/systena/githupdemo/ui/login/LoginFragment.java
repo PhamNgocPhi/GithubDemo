@@ -3,9 +3,13 @@ package com.systena.githupdemo.ui.login;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.systena.githupdemo.R;
+import com.systena.githupdemo.databinding.FragmentLoginBinding;
 import com.systena.githupdemo.ui.base.BaseFragment;
+import com.systena.githupdemo.ui.base.ViewState;
+import com.systena.githupdemo.util.common.Define;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +19,7 @@ import androidx.lifecycle.ViewModelProviders;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LoginFragment extends BaseFragment {
+public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
 
     private LoginViewModel loginViewModel;
 
@@ -34,6 +38,27 @@ public class LoginFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         loginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
+
+        binding.btnLogin.setOnClickListener(v -> {
+            loginViewModel.login(binding.tietEmail.getText().toString(), binding.tietPass.getText().toString());
+        });
+
+        loginViewModel.getViewState().observe(this.getViewLifecycleOwner(), this::handleViewState);
+
+    }
+
+    private void handleViewState(ViewState viewState) {
+        if (viewState == null) {
+            return;
+        }
+        switch (viewState.getState()) {
+            case Define.ViewState.SHOW_ERROR:
+                Toast.makeText(getBaseActivity(), viewState.getObjectData().toString(), Toast.LENGTH_LONG).show();
+                break;
+            case Define.ViewState.Login.GO_HOME:
+                Toast.makeText(getBaseActivity(), "home", Toast.LENGTH_LONG).show();
+                break;
+        }
 
     }
 }

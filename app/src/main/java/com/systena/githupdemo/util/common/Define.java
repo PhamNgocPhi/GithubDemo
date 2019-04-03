@@ -1,6 +1,17 @@
 package com.systena.githupdemo.util.common;
 
 public class Define {
+
+    public class ViewState {
+        public static final int SHOW_LOADING = 1;
+        public static final int HIDE_lOADING = 2;
+        public static final int SHOW_ERROR = 3;
+
+        public class Login {
+            public static final int GO_HOME = 1;
+        }
+    }
+
     public class ResponseStatus {
         public static final int LOADING = 1;
         public static final int SUCCESS = 2;
