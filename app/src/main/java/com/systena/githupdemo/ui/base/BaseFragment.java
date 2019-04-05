@@ -88,17 +88,11 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFrag
         resetViewState();
     }
 
-    public BaseActivity getBaseActivity() {
+    protected BaseActivity getBaseActivity() {
         return activity;
     }
 
     protected boolean isDuplicateClick() {
         return activity.isDuplicateClick();
-    }
-
-    protected void hideActionBar() {
-        if (activity.getSupportActionBar() != null) {
-            activity.getSupportActionBar().hide();
-        }
     }
 }

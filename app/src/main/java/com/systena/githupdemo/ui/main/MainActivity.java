@@ -37,11 +37,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         super.onCreate(savedInstanceState);
         mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
         navigationManager = new NavigationManager(this.getSupportFragmentManager(), R.id.rlMain);
-        setSupportActionBar(binding.toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
 
         navigationManager.openNoAddToBackStack(LoginFragment.class);
     }

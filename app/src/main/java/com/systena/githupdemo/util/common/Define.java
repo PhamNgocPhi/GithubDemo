@@ -10,6 +10,10 @@ public class Define {
         public class Login {
             public static final int GO_HOME = 1;
         }
+
+        public class Register {
+            public static final int GO_HOME = 1;
+        }
     }
 
     public class ResponseStatus {

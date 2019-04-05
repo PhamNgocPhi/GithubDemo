@@ -4,6 +4,7 @@ package com.systena.githupdemo.ui.login;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.QuickContactBadge;
 import android.widget.Toast;
 
 import com.systena.githupdemo.R;
@@ -11,6 +12,7 @@ import com.systena.githupdemo.databinding.FragmentLoginBinding;
 import com.systena.githupdemo.ui.base.BaseFragment;
 import com.systena.githupdemo.ui.base.ViewState;
 import com.systena.githupdemo.ui.home.HomeFragment;
+import com.systena.githupdemo.ui.register.RegisterFragment;
 import com.systena.githupdemo.util.common.Define;
 
 import androidx.annotation.NonNull;
@@ -69,6 +71,8 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
         binding.btnLogin.setOnClickListener(v -> {
             loginViewModel.login(binding.tietEmail.getText().toString(), binding.tietPass.getText().toString());
         });
+
+        binding.btnRegister.setOnClickListener(v -> navigationManager.open(RegisterFragment.class));
     }
 
 }

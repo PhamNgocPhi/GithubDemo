@@ -2,16 +2,17 @@ package com.systena.githupdemo.ui.register;
 
 
 import android.app.Fragment;
-import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.databinding.FragmentRegisterBinding;
 import com.systena.githupdemo.ui.base.BaseFragment;
 import com.systena.githupdemo.ui.base.ViewState;
+import com.systena.githupdemo.ui.home.HomeFragment;
+import com.systena.githupdemo.util.common.Define;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 
 /**
@@ -31,18 +32,38 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding> {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        registerViewModel = ViewModelProviders.of(this, viewModelFactory).get(RegisterViewModel.class);
-
-        registerViewModel.getViewState().observe(this.getViewLifecycleOwner(), this::handleViewState);
+    protected void resetViewState() {
+        registerViewModel.resetViewState();
     }
 
-    private void handleViewState(ViewState viewState) {
-        if (viewState == null) {
-            return;
-        }
+    @Override
+    protected LiveData<ViewState> getViewStateLiveData() {
+        return registerViewModel.getViewState();
+    }
 
+    @Override
+    protected void handleViewState(ViewState viewState) {
+        switch (viewState.getState()) {
+            case Define.ViewState.Register.GO_HOME:
+                navigationManager.open(HomeFragment.class);
+                break;
+            case Define.ViewState.SHOW_ERROR:
+                Toast.makeText(getBaseActivity(), "Error", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void initViewModel() {
+        registerViewModel = ViewModelProviders.of(this, viewModelFactory).get(RegisterViewModel.class);
+    }
+
+    @Override
+    protected void initView() {
+        binding.btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerViewModel.register(binding.tietEmail.getText().toString(), binding.tietPass.getText().toString());
+            }
+        });
     }
 }
