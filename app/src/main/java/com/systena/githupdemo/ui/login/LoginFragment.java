@@ -2,6 +2,7 @@ package com.systena.githupdemo.ui.login;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -9,11 +10,13 @@ import com.systena.githupdemo.R;
 import com.systena.githupdemo.databinding.FragmentLoginBinding;
 import com.systena.githupdemo.ui.base.BaseFragment;
 import com.systena.githupdemo.ui.base.ViewState;
+import com.systena.githupdemo.ui.home.HomeFragment;
 import com.systena.githupdemo.util.common.Define;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 
 /**
@@ -34,31 +37,38 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        loginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
-
-        binding.btnLogin.setOnClickListener(v -> {
-            loginViewModel.login(binding.tietEmail.getText().toString(), binding.tietPass.getText().toString());
-        });
-
-        loginViewModel.getViewState().observe(this.getViewLifecycleOwner(), this::handleViewState);
-
+    protected void resetViewState() {
+        loginViewModel.resetViewState();
     }
 
-    private void handleViewState(ViewState viewState) {
-        if (viewState == null) {
-            return;
-        }
+    @Override
+    protected LiveData<ViewState> getViewStateLiveData() {
+        return loginViewModel.getViewState();
+    }
+
+    @Override
+    protected void handleViewState(ViewState viewState) {
         switch (viewState.getState()) {
             case Define.ViewState.SHOW_ERROR:
                 Toast.makeText(getBaseActivity(), viewState.getObjectData().toString(), Toast.LENGTH_LONG).show();
                 break;
             case Define.ViewState.Login.GO_HOME:
+                navigationManager.open(HomeFragment.class);
                 Toast.makeText(getBaseActivity(), "home", Toast.LENGTH_LONG).show();
                 break;
         }
-
     }
+
+    @Override
+    protected void initViewModel() {
+        loginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
+    }
+
+    @Override
+    protected void initView() {
+        binding.btnLogin.setOnClickListener(v -> {
+            loginViewModel.login(binding.tietEmail.getText().toString(), binding.tietPass.getText().toString());
+        });
+    }
+
 }

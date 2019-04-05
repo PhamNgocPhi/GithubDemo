@@ -5,6 +5,7 @@ import com.systena.githupdemo.di.util.ViewModelKey;
 import com.systena.githupdemo.ui.home.HomeViewModel;
 import com.systena.githupdemo.ui.login.LoginViewModel;
 import com.systena.githupdemo.ui.main.MainViewModel;
+import com.systena.githupdemo.ui.register.RegisterViewModel;
 import com.systena.githupdemo.ui.splash.SplashViewModel;
 
 import androidx.lifecycle.ViewModel;
@@ -35,6 +36,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LoginViewModel.class)
     abstract ViewModel bindLoginViewModel(LoginViewModel loginViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RegisterViewModel.class)
+    abstract ViewModel bindRegisterViewModel(RegisterViewModel registerViewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);

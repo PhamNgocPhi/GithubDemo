@@ -12,8 +12,11 @@ import javax.inject.Inject;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import dagger.android.support.DaggerFragment;
 
@@ -22,7 +25,8 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFrag
     protected T binding;
 
     private BaseActivity activity;
-    private NavigationManager navigationManager;
+    protected NavigationManager navigationManager;
+
 
     @Inject
     protected ViewModelProvider.Factory viewModelFactory;
@@ -30,11 +34,39 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFrag
     @LayoutRes
     protected abstract int layoutRes();
 
+    protected abstract void resetViewState();
+
+    protected abstract LiveData<ViewState> getViewStateLiveData();
+
+    protected abstract void handleViewState(ViewState viewState);
+
+    protected abstract void initViewModel();
+
+    /**
+     * start do something in view
+     */
+    protected abstract void initView();
+
     @Override
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, layoutRes(), container, false);
         binding.setLifecycleOwner(this.getViewLifecycleOwner());
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initViewModel();
+        initView();
+        if(getViewStateLiveData() != null) {
+            getViewStateLiveData().observe(this.getViewLifecycleOwner(), viewState -> {
+                if(viewState != null) {
+                    handleViewState(viewState);
+                }
+            });
+        }
     }
 
     @Override
@@ -50,11 +82,23 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFrag
         activity = null;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        resetViewState();
+    }
+
     public BaseActivity getBaseActivity() {
         return activity;
     }
 
     protected boolean isDuplicateClick() {
         return activity.isDuplicateClick();
+    }
+
+    protected void hideActionBar() {
+        if (activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar().hide();
+        }
     }
 }

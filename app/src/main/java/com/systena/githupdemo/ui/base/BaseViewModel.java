@@ -15,10 +15,15 @@ public class BaseViewModel extends ViewModel {
         return mViewState;
     }
 
+    public void resetViewState() {
+        if (mViewState != null) {
+            mViewState.setValue(null);
+        }
+    }
+
     @Override
     protected void onCleared() {
         super.onCleared();
-
         if (disposable != null) {
             disposable.clear();
             disposable = null;
