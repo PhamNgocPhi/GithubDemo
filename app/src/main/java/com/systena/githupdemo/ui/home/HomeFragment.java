@@ -57,4 +57,10 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
 
     }
 
+    @Override
+    protected boolean onBackPressed() {
+        navigationManager.navigateBack();
+        return false;
+    }
+
 }

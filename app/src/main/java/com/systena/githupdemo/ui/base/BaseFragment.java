@@ -47,6 +47,11 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFrag
      */
     protected abstract void initView();
 
+    /**
+     * if return true, use super.onBackPressed()
+     */
+    protected abstract boolean onBackPressed();
+
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

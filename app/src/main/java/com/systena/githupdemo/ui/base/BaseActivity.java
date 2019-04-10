@@ -62,7 +62,7 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppC
     @Override
     protected void onPause() {
         super.onPause();
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
     }
@@ -187,5 +187,16 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppC
                 break;
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getNavigationManager() != null && getNavigationManager().getCurrentFragment() != null) {
+            if (getNavigationManager().getCurrentFragment().onBackPressed()) {
+                super.onBackPressed();
+            }
+        } else {
+            super.onBackPressed();
+        }
     }
 }

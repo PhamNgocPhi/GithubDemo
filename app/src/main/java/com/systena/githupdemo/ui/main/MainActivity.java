@@ -6,7 +6,7 @@ import com.systena.githupdemo.R;
 import com.systena.githupdemo.databinding.ActivityMainBinding;
 import com.systena.githupdemo.ui.NavigationManager;
 import com.systena.githupdemo.ui.base.BaseActivity;
-import com.systena.githupdemo.ui.login.LoginFragment;
+import com.systena.githupdemo.ui.splash.SplashFragment;
 
 import javax.inject.Inject;
 
@@ -38,6 +38,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
         navigationManager = new NavigationManager(this.getSupportFragmentManager(), R.id.rlMain);
 
-        navigationManager.openNoAddToBackStack(LoginFragment.class);
+        navigationManager.openNoAddToBackStack(SplashFragment.class);
     }
 }

@@ -2,7 +2,6 @@ package com.systena.githupdemo.ui.register;
 
 
 import android.app.Fragment;
-import android.view.View;
 import android.widget.Toast;
 
 import com.systena.githupdemo.R;
@@ -59,11 +58,12 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding> {
 
     @Override
     protected void initView() {
-        binding.btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                registerViewModel.register(binding.tietEmail.getText().toString(), binding.tietPass.getText().toString());
-            }
-        });
+
+    }
+
+    @Override
+    protected boolean onBackPressed() {
+        navigationManager.navigateBack();
+        return false;
     }
 }

@@ -1,10 +1,8 @@
 package com.systena.githupdemo.ui.login;
 
 
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.QuickContactBadge;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.systena.githupdemo.R;
@@ -15,8 +13,6 @@ import com.systena.githupdemo.ui.home.HomeFragment;
 import com.systena.githupdemo.ui.register.RegisterFragment;
 import com.systena.githupdemo.util.common.Define;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
@@ -68,11 +64,38 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
 
     @Override
     protected void initView() {
-        binding.btnLogin.setOnClickListener(v -> {
-            loginViewModel.login(binding.tietEmail.getText().toString(), binding.tietPass.getText().toString());
-        });
+        binding.btnLogin.setOnClickListener(v -> onClickLogin());
+        binding.llFacebook.setOnClickListener(v -> onClickFacebook());
+        binding.tvCreateAccount.setOnClickListener(v -> onClickCreateAccount());
+    }
 
-        binding.btnRegister.setOnClickListener(v -> navigationManager.open(RegisterFragment.class));
+    @Override
+    protected boolean onBackPressed() {
+        navigationManager.navigateBack();
+        return false;
+    }
+
+    private void onClickCreateAccount() {
+        if (isDuplicateClick()) {
+            return;
+        }
+        navigationManager.open(RegisterFragment.class);
+    }
+
+    private void onClickLogin() {
+        if (isDuplicateClick()) {
+            return;
+        }
+        final Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.bounce);
+        binding.btnLogin.startAnimation(animation);
+    }
+
+    private void onClickFacebook() {
+        if (isDuplicateClick()) {
+            return;
+        }
+        final Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.bounce);
+        binding.llFacebook.startAnimation(animation);
     }
 
 }
