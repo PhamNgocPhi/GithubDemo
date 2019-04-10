@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "1030745025183",
+    "firebase_url": "https://github-demo-f662b.firebaseio.com",
+    "project_id": "github-demo-f662b",
+    "storage_bucket": "github-demo-f662b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1030745025183:android:02fd66cc0ee7627e",
+        "android_client_info": {
+          "package_name": "com.systena.githupdemo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4HqAxsb4xt6ovsEdVPb17NWsfrCIAZq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1030745025183-rd0lfuqvm7mlrtoqnskp56p7oe5pbn5n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

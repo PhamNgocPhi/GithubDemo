@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 public class NavigationManager<T extends BaseFragment> {
 
     private FragmentManager fragmentManager;
-    private String currentFragment;
+    private T currentFragment;
     private int container;
 
     public NavigationManager(FragmentManager fragmentManager, @IdRes int container) {
@@ -18,17 +18,17 @@ public class NavigationManager<T extends BaseFragment> {
     }
 
     private void openFragment(Class<T> fragment, boolean addToBackStack, boolean isOpenAsRoot) {
-        if (currentFragment != null && currentFragment.equalsIgnoreCase(fragment.getName())) {
+        if (currentFragment != null && currentFragment.getClass().getName().equalsIgnoreCase(fragment.getName())) {
             return;
         }
-        currentFragment = fragment.getName();
+
         try {
-            T instance = fragment.newInstance();
+            currentFragment = fragment.newInstance();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             if (isOpenAsRoot) {
-                fragmentTransaction.replace(container, instance, "ROOT");
+                fragmentTransaction.replace(container, currentFragment, "ROOT");
             } else {
-                fragmentTransaction.replace(container, instance);
+                fragmentTransaction.replace(container, currentFragment);
             }
             if (addToBackStack) {
                 fragmentTransaction.addToBackStack(fragment.getName());
@@ -77,7 +77,8 @@ public class NavigationManager<T extends BaseFragment> {
         } else {
             fragmentManager.popBackStackImmediate();
             int currentSize = fragmentManager.getBackStackEntryCount();
-            currentFragment = fragmentManager.getBackStackEntryAt(currentSize - 1).getName();
+            String currentFragmentName = fragmentManager.getBackStackEntryAt(currentSize - 1).getName();
+            currentFragment = (T) fragmentManager.findFragmentByTag(currentFragmentName);
             return true;
         }
     }
@@ -93,7 +94,8 @@ public class NavigationManager<T extends BaseFragment> {
             if (fragmentManager.findFragmentByTag(name) != null) {
                 fragmentManager.popBackStackImmediate(name, 0);
                 int currentSize = fragmentManager.getBackStackEntryCount();
-                currentFragment = fragmentManager.getBackStackEntryAt(currentSize - 1).getName();
+                String currentFragmentName = fragmentManager.getBackStackEntryAt(currentSize - 1).getName();
+                currentFragment = (T) fragmentManager.findFragmentByTag(currentFragmentName);
                 return true;
             } else {
                 return false;
@@ -101,5 +103,7 @@ public class NavigationManager<T extends BaseFragment> {
         }
     }
 
-
+    public T getCurrentFragment() {
+        return currentFragment;
+    }
 }

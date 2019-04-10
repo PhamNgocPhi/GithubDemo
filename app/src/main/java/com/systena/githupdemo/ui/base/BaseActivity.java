@@ -25,7 +25,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import dagger.android.support.DaggerAppCompatActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.HttpException;
 
@@ -38,7 +38,7 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppC
     private View focusedViewOnActionDown;
     private boolean touchWasInsideFocusedView, hasMove;
     private float rawX, rawY;
-    private Disposable disposable;
+    protected CompositeDisposable disposable;
     public long lastClickTime = System.currentTimeMillis();
 
     @LayoutRes
@@ -50,18 +50,33 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppC
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, layoutRes());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        disposable = new CompositeDisposable();
         ObserveRxBus();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
+
     private void ObserveRxBus() {
-        disposable = ((GithubApplication) getApplication())
+        disposable.add(((GithubApplication) getApplication())
                 .getRxBus()
                 .toObservable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
 
-                });
+                })
+        );
     }
 
     protected boolean isDuplicateClick() {
@@ -172,5 +187,16 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppC
                 break;
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getNavigationManager() != null && getNavigationManager().getCurrentFragment() != null) {
+            if (getNavigationManager().getCurrentFragment().onBackPressed()) {
+                super.onBackPressed();
+            }
+        } else {
+            super.onBackPressed();
+        }
     }
 }

@@ -3,7 +3,10 @@ package com.systena.githupdemo.di.module;
 import com.systena.githupdemo.di.util.ViewModelFactory;
 import com.systena.githupdemo.di.util.ViewModelKey;
 import com.systena.githupdemo.ui.home.HomeViewModel;
+import com.systena.githupdemo.ui.login.LoginViewModel;
 import com.systena.githupdemo.ui.main.MainViewModel;
+import com.systena.githupdemo.ui.register.RegisterViewModel;
+import com.systena.githupdemo.ui.splash.SplashViewModel;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,6 +26,21 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(HomeViewModel.class)
     abstract ViewModel bindHomeViewModel(HomeViewModel homeViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SplashViewModel.class)
+    abstract ViewModel bindSplashViewModel(SplashViewModel splashViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LoginViewModel.class)
+    abstract ViewModel bindLoginViewModel(LoginViewModel loginViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RegisterViewModel.class)
+    abstract ViewModel bindRegisterViewModel(RegisterViewModel registerViewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);
