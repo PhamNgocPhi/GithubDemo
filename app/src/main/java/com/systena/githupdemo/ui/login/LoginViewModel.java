@@ -3,12 +3,15 @@ package com.systena.githupdemo.ui.login;
 import android.text.TextUtils;
 import android.util.Patterns;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.ui.base.BaseViewModel;
 import com.systena.githupdemo.ui.base.ViewState;
 import com.systena.githupdemo.util.common.Define;
 import com.systena.githupdemo.util.common.ResourceProvider;
+
+import java.util.Arrays;
 
 import javax.inject.Inject;
 
@@ -46,6 +49,10 @@ public class LoginViewModel extends BaseViewModel {
                         }
                     });
         }
+    }
+
+    public void facebookLogin() {
+
     }
 
     private boolean validate(String email, String pass) {

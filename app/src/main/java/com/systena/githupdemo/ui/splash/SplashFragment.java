@@ -7,7 +7,9 @@ import com.systena.githupdemo.R;
 import com.systena.githupdemo.databinding.FragmentSplashBinding;
 import com.systena.githupdemo.ui.base.BaseFragment;
 import com.systena.githupdemo.ui.base.ViewState;
+import com.systena.githupdemo.ui.home.HomeFragment;
 import com.systena.githupdemo.ui.login.LoginFragment;
+import com.systena.githupdemo.util.common.Define;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -41,7 +43,15 @@ public class SplashFragment extends BaseFragment<FragmentSplashBinding> {
 
     @Override
     protected void handleViewState(ViewState viewState) {
-
+        hideLoading();
+        switch (viewState.getState()) {
+            case Define.ViewState.Splash.GO_HOME:
+                new Handler().postDelayed(() -> navigationManager.open(HomeFragment.class), 2000);
+                break;
+            case Define.ViewState.Splash.GO_LOGIN:
+                new Handler().postDelayed(() -> navigationManager.open(LoginFragment.class), 2000);
+                break;
+        }
     }
 
     @Override
@@ -51,8 +61,7 @@ public class SplashFragment extends BaseFragment<FragmentSplashBinding> {
 
     @Override
     protected void initView() {
-        final Handler handler = new Handler();
-        handler.postDelayed(() -> navigationManager.open(LoginFragment.class), 2000);
+        showLoading();
     }
 
     @Override

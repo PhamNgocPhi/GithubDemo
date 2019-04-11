@@ -7,6 +7,11 @@ public class Define {
         public static final int HIDE_lOADING = 2;
         public static final int SHOW_ERROR = 3;
 
+        public class Splash {
+            public static final int GO_LOGIN = 1;
+            public static final int GO_HOME = 2;
+        }
+
         public class Login {
             public static final int GO_HOME = 1;
             public static final int ERROR_VALIDATE = 2;

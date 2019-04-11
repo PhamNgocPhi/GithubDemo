@@ -52,7 +52,7 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
                 showErrorDialog(viewState.getMessage());
                 break;
             case Define.ViewState.Login.GO_HOME:
-                navigationManager.open(HomeFragment.class);
+                navigationManager.openAsRoot(HomeFragment.class);
                 break;
             default:
                 break;
