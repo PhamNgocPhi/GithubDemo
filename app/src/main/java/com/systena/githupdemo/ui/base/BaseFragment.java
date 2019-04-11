@@ -6,7 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.systena.githupdemo.R;
 import com.systena.githupdemo.ui.NavigationManager;
+import com.systena.githupdemo.ui.custom.AppDialog;
+import com.systena.githupdemo.ui.custom.AppLoading;
 
 import javax.inject.Inject;
 
@@ -16,7 +19,6 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import dagger.android.support.DaggerFragment;
 
@@ -65,9 +67,9 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFrag
         super.onViewCreated(view, savedInstanceState);
         initViewModel();
         initView();
-        if(getViewStateLiveData() != null) {
+        if (getViewStateLiveData() != null) {
             getViewStateLiveData().observe(this.getViewLifecycleOwner(), viewState -> {
-                if(viewState != null) {
+                if (viewState != null) {
                     handleViewState(viewState);
                 }
             });
@@ -91,6 +93,33 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFrag
     public void onDestroyView() {
         super.onDestroyView();
         resetViewState();
+    }
+
+    protected void showErrorDialog(String content, String buttonText) {
+        if (activity != null) {
+            activity.showDialogError(content, buttonText, true, null);
+        }
+    }
+
+    protected void showErrorDialog(String content, String buttonText, @NonNull AppDialog.OnDialogClickListener listener) {
+        if (activity != null) {
+            activity.showDialogError(content, buttonText, false, listener);
+        }
+    }
+
+    protected void showErrorDialog(String content) {
+        if (activity != null) {
+            activity.showDialogError(content, activity.getString(R.string.ok), true, null);
+        }
+    }
+
+
+    protected void showLoading() {
+        AppLoading.getInstance(getContext()).show();
+    }
+
+    protected void hideLoading() {
+        AppLoading.getInstance(getContext()).hidden();
     }
 
     protected BaseActivity getBaseActivity() {

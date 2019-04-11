@@ -32,6 +32,10 @@ public class ViewState {
         return objectData;
     }
 
+    public String getMessage() {
+        return (String) objectData;
+    }
+
     public void setObjectData(Object objectData) {
         this.objectData = objectData;
     }

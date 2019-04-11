@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#7e1f51</color>
     <color name="colorAccent">#D81B60</color>
 
+    <color name="textBlack">#2c3e50</color>
+
     <color name="gradientFirst">#4a3949</color>
     <color name="gradientSecond">#7e1f51</color>
 

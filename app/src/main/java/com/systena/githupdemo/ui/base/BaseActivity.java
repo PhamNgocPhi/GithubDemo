@@ -12,9 +12,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.systena.githupdemo.GithubApplication;
+import com.systena.githupdemo.R;
 import com.systena.githupdemo.data.model.ApiObjectResponse;
 import com.systena.githupdemo.data.model.RequestError;
 import com.systena.githupdemo.ui.NavigationManager;
+import com.systena.githupdemo.ui.custom.AppDialog;
 import com.systena.githupdemo.util.common.Define;
 
 import java.io.IOException;
@@ -187,6 +189,17 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppC
                 break;
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    protected void showDialogError(String content, String btnPrimary, boolean isCancel,@Nullable AppDialog.OnDialogClickListener listener) {
+        AppDialog appDialog = new AppDialog(this);
+        appDialog.setTitle(getString(R.string.error))
+                .setContent(content)
+                .onClickPositiveButton(btnPrimary, listener);
+        if(isCancel) {
+            appDialog.setCanceledOnTouchOutside();
+        }
+        appDialog.show();
     }
 
     @Override

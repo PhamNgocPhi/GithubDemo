@@ -3,7 +3,6 @@ package com.systena.githupdemo.ui.login;
 
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.databinding.FragmentLoginBinding;
@@ -46,13 +45,16 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
 
     @Override
     protected void handleViewState(ViewState viewState) {
+        hideLoading();
         switch (viewState.getState()) {
-            case Define.ViewState.SHOW_ERROR:
-                Toast.makeText(getBaseActivity(), viewState.getObjectData().toString(), Toast.LENGTH_LONG).show();
+            case Define.ViewState.Login.LOGIN_FAILED:
+            case Define.ViewState.Login.ERROR_VALIDATE:
+                showErrorDialog(viewState.getMessage());
                 break;
             case Define.ViewState.Login.GO_HOME:
                 navigationManager.open(HomeFragment.class);
-                Toast.makeText(getBaseActivity(), "home", Toast.LENGTH_LONG).show();
+                break;
+            default:
                 break;
         }
     }
@@ -86,8 +88,12 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
         if (isDuplicateClick()) {
             return;
         }
+        showLoading();
         final Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.bounce);
         binding.btnLogin.startAnimation(animation);
+        String email = binding.etEmail.getText().toString();
+        String pass = binding.etPass.getText().toString();
+        loginViewModel.login(email, pass);
     }
 
     private void onClickFacebook() {
