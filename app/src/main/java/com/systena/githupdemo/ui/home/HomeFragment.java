@@ -1,20 +1,14 @@
 package com.systena.githupdemo.ui.home;
 
 
-import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProviders;
-
-import android.view.View;
-
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.databinding.FragmentHomeBinding;
 import com.systena.githupdemo.ui.base.BaseFragment;
 import com.systena.githupdemo.ui.base.ViewState;
+
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProviders;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,7 +53,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
 
     @Override
     protected boolean onBackPressed() {
-        navigationManager.navigateBack();
+        if (!navigationManager.navigateBack()) {
+            getBaseActivity().moveTaskToBack(true);
+        }
         return false;
     }
 

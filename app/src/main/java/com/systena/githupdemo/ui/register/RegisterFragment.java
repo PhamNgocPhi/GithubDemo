@@ -2,7 +2,6 @@ package com.systena.githupdemo.ui.register;
 
 
 import android.app.Fragment;
-import android.widget.Toast;
 
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.databinding.FragmentRegisterBinding;
@@ -42,12 +41,17 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding> {
 
     @Override
     protected void handleViewState(ViewState viewState) {
+        hideLoading();
         switch (viewState.getState()) {
-            case Define.ViewState.Register.GO_HOME:
-                navigationManager.open(HomeFragment.class);
+            case Define.ViewState.Register.REGISTER_FAILED:
+            case Define.ViewState.Register.ERROR_VALIDATE:
+                showErrorDialog(viewState.getMessage());
                 break;
-            case Define.ViewState.SHOW_ERROR:
-                Toast.makeText(getBaseActivity(), "Error", Toast.LENGTH_SHORT).show();
+            case Define.ViewState.Register.GO_HOME:
+                navigationManager.openAsRoot(HomeFragment.class);
+                break;
+            default:
+                break;
         }
     }
 
@@ -58,7 +62,12 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding> {
 
     @Override
     protected void initView() {
-
+        binding.btnRegister.setOnClickListener(v -> {
+            showLoading();
+            String email = binding.etEmail.getText().toString();
+            String pass = binding.etPass.getText().toString();
+            registerViewModel.register(email, pass);
+        });
     }
 
     @Override

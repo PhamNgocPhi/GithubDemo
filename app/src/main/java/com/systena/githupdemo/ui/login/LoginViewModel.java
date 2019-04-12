@@ -3,15 +3,14 @@ package com.systena.githupdemo.ui.login;
 import android.text.TextUtils;
 import android.util.Patterns;
 
-import com.facebook.login.LoginManager;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.ui.base.BaseViewModel;
 import com.systena.githupdemo.ui.base.ViewState;
 import com.systena.githupdemo.util.common.Define;
 import com.systena.githupdemo.util.common.ResourceProvider;
-
-import java.util.Arrays;
 
 import javax.inject.Inject;
 
@@ -51,8 +50,21 @@ public class LoginViewModel extends BaseViewModel {
         }
     }
 
-    public void facebookLogin() {
-
+    void facebookLogin(String accessToken) {
+        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken);
+        firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        mViewState.setValue(new ViewState(Define.ViewState.Login.GO_HOME));
+                    } else {
+                        ViewState viewState = new ViewState(Define.ViewState.Login.LOGIN_FAILED);
+                        String message = task.getException() == null ?
+                                resourceProvider.getString(R.string.error_unknown)
+                                : task.getException().getMessage();
+                        viewState.setObjectData(message);
+                        mViewState.setValue(viewState);
+                    }
+                });
     }
 
     private boolean validate(String email, String pass) {

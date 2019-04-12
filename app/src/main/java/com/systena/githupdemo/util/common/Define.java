@@ -20,7 +20,10 @@ public class Define {
 
         public class Register {
             public static final int GO_HOME = 1;
+            public static final int ERROR_VALIDATE = 2;
+            public static final int REGISTER_FAILED = 3;
         }
+
     }
 
     public class ResponseStatus {

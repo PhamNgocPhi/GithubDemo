@@ -1,5 +1,6 @@
 package com.systena.githupdemo.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.systena.githupdemo.R;
@@ -10,6 +11,8 @@ import com.systena.githupdemo.ui.splash.SplashFragment;
 
 import javax.inject.Inject;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -39,5 +42,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         navigationManager = new NavigationManager(this.getSupportFragmentManager(), R.id.rlMain);
 
         navigationManager.openNoAddToBackStack(SplashFragment.class);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }
