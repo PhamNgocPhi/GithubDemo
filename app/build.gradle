@@ -45,6 +45,7 @@ def stethoVersion = '1.5.1'
 def firebaseVersion = '16.0.8'
 def firebaseAuthVersion = '16.2.1'
 def lottieVersion = '3.0.0'
+def circleImageVersion = '3.0.0'
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -101,5 +102,8 @@ dependencies {
 
     // material
     implementation "com.google.android.material:material:$materialVersion"
+
+    // circle image view
+    implementation "de.hdodenhof:circleimageview:$circleImageVersion"
 
 }
