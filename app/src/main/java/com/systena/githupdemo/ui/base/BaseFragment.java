@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.ui.NavigationManager;
 import com.systena.githupdemo.ui.custom.AppDialog;
-import com.systena.githupdemo.ui.custom.AppLoading;
 
 import javax.inject.Inject;
 
@@ -45,14 +44,14 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFrag
     protected abstract void initViewModel();
 
     /**
-     * start do something in view
-     */
-    protected abstract void initView();
-
-    /**
      * if return true, use super.onBackPressed()
      */
     protected abstract boolean onBackPressed();
+
+    /**
+     * start do something in view
+     */
+    protected abstract void initView();
 
     @Override
 
@@ -115,11 +114,15 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFrag
 
 
     protected void showLoading() {
-        AppLoading.getInstance(getContext()).show();
+        if (activity != null) {
+            activity.showLoading();
+        }
     }
 
     protected void hideLoading() {
-        AppLoading.getInstance(getContext()).hidden();
+        if (activity != null) {
+            activity.hideLoading();
+        }
     }
 
     protected BaseActivity getBaseActivity() {

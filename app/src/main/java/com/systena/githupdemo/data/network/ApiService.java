@@ -1,7 +1,14 @@
 package com.systena.githupdemo.data.network;
 
+import com.systena.githupdemo.data.model.RepoResponse;
+
+import io.reactivex.Single;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
+
 public interface ApiService {
 
-//    @GET("orgs/Google/repos")
-//    Single<List<Object>> getRepositories();
+    @GET("search/repositories?sort=stars")
+    Single<RepoResponse> getRepositories(@Query("q") String key);
+
 }

@@ -1,16 +1,14 @@
 package com.systena.githupdemo.ui.home;
 
 
-import android.view.MenuItem;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.databinding.FragmentHomeBinding;
 import com.systena.githupdemo.ui.base.BaseFragment;
 import com.systena.githupdemo.ui.base.ViewState;
+import com.systena.githupdemo.ui.github.GithubFragment;
 import com.systena.githupdemo.ui.recipes.RecipesFragment;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
@@ -62,31 +60,31 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
 
     @Override
     protected void initView() {
-
+        binding.bnvBottomBar.setOnNavigationItemSelectedListener(listener);
 
         loadFragment(new RecipesFragment());
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener listener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment fragment;
-            switch (item.getItemId()) {
-                case R.id.navigationHome:
-                    fragment = new RecipesFragment();
-                    loadFragment(fragment);
-                    return true;
-            }
-
-            return false;
+    private BottomNavigationView.OnNavigationItemSelectedListener listener = item -> {
+        Fragment fragment;
+        switch (item.getItemId()) {
+            case R.id.navigationHome:
+                fragment = new RecipesFragment();
+                loadFragment(fragment);
+                return true;
+            case R.id.navigationGithub:
+                fragment = new GithubFragment();
+                loadFragment(fragment);
+                return true;
         }
+
+        return false;
     };
 
     private void loadFragment(Fragment fragment) {
         // load fragment
         FragmentTransaction transaction = getBaseActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.flContainer, fragment);
-        transaction.addToBackStack(null);
         transaction.commit();
     }
 

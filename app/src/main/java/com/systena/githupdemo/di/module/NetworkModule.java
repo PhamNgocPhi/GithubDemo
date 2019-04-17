@@ -46,7 +46,7 @@ public class NetworkModule {
 
         return new OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
-//                .addInterceptor(new NetworkConnectionInterceptor(context))
+                .addInterceptor(new NetworkConnectionInterceptor(context))
                 .connectTimeout(Define.Network.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(Define.Network.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .build();

@@ -3,9 +3,9 @@ package com.systena.githupdemo.util.common;
 public class Define {
 
     public class ViewState {
-        public static final int SHOW_LOADING = 1;
-        public static final int HIDE_lOADING = 2;
-        public static final int SHOW_ERROR = 3;
+        public static final int SHOW_LOADING = -1;
+        public static final int HIDE_lOADING = -2;
+        public static final int SHOW_ERROR = -3;
 
         public class Splash {
             public static final int GO_LOGIN = 1;
@@ -22,6 +22,10 @@ public class Define {
             public static final int GO_HOME = 1;
             public static final int ERROR_VALIDATE = 2;
             public static final int REGISTER_FAILED = 3;
+        }
+
+        public class Github {
+            public static final int SEARCH_ERROR = 1;
         }
 
     }
@@ -54,6 +58,7 @@ public class Define {
             public static final String FULL_NAME = "full_name";
             public static final String DESCRIPTION = "description";
             public static final String CONTRIBUTORS_URL = "contributors_url";
+            public static final String STARGAZERS_COUNT = "stargazers_count";
         }
     }
 
@@ -65,6 +70,7 @@ public class Define {
             public static final String NO_RESPONSE = "E1001";
             public static final String UNKNOWN_ERROR = "E1002";
             public static final String TIME_OUT = "E1003";
+            public static final String ACCESS_TOKEN_EXPIRED = "E1004";
         }
 
         public class BaseResponse {

@@ -1,5 +1,6 @@
 package com.systena.githupdemo.data.model;
 
+import com.google.gson.annotations.SerializedName;
 import com.systena.githupdemo.util.common.Define;
 
 import androidx.room.ColumnInfo;
@@ -11,30 +12,40 @@ import androidx.room.PrimaryKey;
 public class Repo {
     @PrimaryKey
     @ColumnInfo(name = Define.Database.Repo.ID)
+    @SerializedName(Define.Database.Repo.ID)
     private Long id;
 
     @ColumnInfo(name = Define.Database.Repo.NAME)
+    @SerializedName(Define.Database.Repo.NAME)
     private String name;
 
     @ColumnInfo(name = Define.Database.Repo.FULL_NAME)
+    @SerializedName(Define.Database.Repo.FULL_NAME)
     private String fullName;
 
     @ColumnInfo(name = Define.Database.Repo.DESCRIPTION)
+    @SerializedName(Define.Database.Repo.DESCRIPTION)
     private String description;
 
     @ColumnInfo(name = Define.Database.Repo.CONTRIBUTORS_URL)
+    @SerializedName(Define.Database.Repo.CONTRIBUTORS_URL)
     private String contributorsUrl;
+
+    @ColumnInfo(name = Define.Database.Repo.STARGAZERS_COUNT)
+    @SerializedName(Define.Database.Repo.STARGAZERS_COUNT)
+    private Integer stargazersCount;
 
     public Repo() {
     }
 
     @Ignore
-    public Repo(Long id, String name, String fullName, String description, String contributorsUrl) {
+    public Repo(Long id, String name, String fullName, String description, String contributorsUrl, Integer stargazersCount) {
         this.id = id;
         this.name = name;
         this.fullName = fullName;
         this.description = description;
         this.contributorsUrl = contributorsUrl;
+        this.stargazersCount = stargazersCount;
     }
 
     public Long getId() {
@@ -75,6 +86,14 @@ public class Repo {
 
     public void setContributorsUrl(String contributorsUrl) {
         this.contributorsUrl = contributorsUrl;
+    }
+
+    public Integer getStargazersCount() {
+        return stargazersCount;
+    }
+
+    public void setStargazersCount(Integer stargazersCount) {
+        this.stargazersCount = stargazersCount;
     }
 }
 

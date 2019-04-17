@@ -17,7 +17,7 @@ public class NetworkConnectionInterceptor implements Interceptor {
     private Context context;
 
     public NetworkConnectionInterceptor(Context context) {
-        rxBus = new RxBus();
+        rxBus = RxBus.getInstance();
         this.context = context;
     }
 
@@ -32,6 +32,12 @@ public class NetworkConnectionInterceptor implements Interceptor {
                 switch (response.code()) {
                     case 503:
                         rxBus.send(Define.Network.ErrorCode.NO_RESPONSE);
+                        break;
+                    case 403:
+                        rxBus.send(Define.Network.ErrorCode.ACCESS_TOKEN_EXPIRED);
+                        break;
+                    case 500:
+                        rxBus.send(Define.Network.ErrorCode.UNKNOWN_ERROR);
                         break;
                 }
                 return response;

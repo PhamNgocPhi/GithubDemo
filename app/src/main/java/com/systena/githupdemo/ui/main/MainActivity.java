@@ -36,6 +36,21 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     }
 
     @Override
+    protected void showDialogLostInternet() {
+        showDialogError("Please check Network Connection", getString(R.string.ok), true, null);
+    }
+
+    @Override
+    protected void showDialogUnknownError() {
+        showDialogError("unknown error occurred", getString(R.string.ok), true, null);
+    }
+
+    @Override
+    protected void showDialogTokenExpired() {
+        showDialogError("Access token expired", getString(R.string.ok), true, null);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);

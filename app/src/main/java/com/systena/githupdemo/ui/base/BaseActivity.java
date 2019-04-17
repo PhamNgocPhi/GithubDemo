@@ -11,13 +11,14 @@ import android.widget.EditText;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import com.systena.githupdemo.GithubApplication;
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.data.model.ApiObjectResponse;
 import com.systena.githupdemo.data.model.RequestError;
 import com.systena.githupdemo.ui.NavigationManager;
 import com.systena.githupdemo.ui.custom.AppDialog;
+import com.systena.githupdemo.ui.custom.AppLoading;
 import com.systena.githupdemo.util.common.Define;
+import com.systena.githupdemo.util.network.RxBus;
 
 import java.io.IOException;
 
@@ -48,6 +49,12 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppC
 
     protected abstract NavigationManager getNavigationManager();
 
+    protected abstract void showDialogLostInternet();
+
+    protected abstract void showDialogUnknownError();
+
+    protected abstract void showDialogTokenExpired();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +65,7 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppC
     protected void onResume() {
         super.onResume();
         disposable = new CompositeDisposable();
-        ObserveRxBus();
+        observeRxBus();
     }
 
     @Override
@@ -69,67 +76,22 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppC
         }
     }
 
-    private void ObserveRxBus() {
-        disposable.add(((GithubApplication) getApplication())
-                .getRxBus()
-                .toObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> {
-
-                })
-        );
-    }
-
-    protected boolean isDuplicateClick() {
-        long now = System.currentTimeMillis();
-        if (now - lastClickTime < CLICK_TIME_INTERVAL) {
-            return true;
-        }
-        lastClickTime = now;
-        return false;
-    }
-
-    protected RequestError handleThrowable(Throwable throwable, boolean isShowDialog) {
-        RequestError requestError = new RequestError();
-        if (throwable instanceof IOException) {
-            requestError.setErrorCode(Define.Network.ErrorCode.LOST_INTERNET);
-            requestError.setErrorMessage(throwable.getMessage());
-        } else if (throwable instanceof HttpException) {
-            HttpException httpException = (HttpException) throwable;
-            try {
-                String errorBody = httpException.response().errorBody().string();
-                Gson gson = new GsonBuilder().create();
-                ApiObjectResponse apiResponse = gson.fromJson(errorBody, ApiObjectResponse.class);
-                if (apiResponse != null && apiResponse.getRequestError() != null) {
-                    requestError = apiResponse.getRequestError();
-                } else {
-                    requestError.setErrorCode(String.valueOf(httpException.code()));
-                    requestError.setErrorMessage("リクエストタイムアウト。");
-                }
-            } catch (IOException e) {
-                requestError.setErrorCode(Define.Network.ErrorCode.UNKNOWN_ERROR);
-                requestError.setErrorMessage("リクエストタイムアウト。");
-            } catch (IllegalStateException e) {
-                requestError.setErrorCode(Define.Network.ErrorCode.UNKNOWN_ERROR);
-                requestError.setErrorMessage("リクエストタイムアウト。");
-            } catch (JsonSyntaxException e) {
-                requestError.setErrorCode(Define.Network.ErrorCode.UNKNOWN_ERROR);
-                requestError.setErrorMessage("リクエストタイムアウト。");
-            } catch (NullPointerException e) {
-                requestError.setErrorCode(Define.Network.ErrorCode.UNKNOWN_ERROR);
-                requestError.setErrorMessage("リクエストタイムアウト。");
-            }
-        }
-
-        return requestError;
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (disposable != null) {
             disposable.dispose();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getNavigationManager() != null && getNavigationManager().getCurrentFragment() != null) {
+            if (getNavigationManager().getCurrentFragment().onBackPressed()) {
+                super.onBackPressed();
+            }
+        } else {
+            super.onBackPressed();
         }
     }
 
@@ -191,25 +153,99 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends DaggerAppC
         return super.dispatchTouchEvent(ev);
     }
 
-    protected void showDialogError(String content, String btnPrimary, boolean isCancel,@Nullable AppDialog.OnDialogClickListener listener) {
+    protected void showLoading() {
+        AppLoading.getInstance(this).show();
+    }
+
+    protected void hideLoading() {
+        AppLoading.getInstance(this).hidden();
+    }
+
+    protected void showDialogError(String content, String btnPrimary, boolean isCancel, @Nullable AppDialog.OnDialogClickListener listener) {
         AppDialog appDialog = new AppDialog(this);
         appDialog.setTitle(getString(R.string.error))
                 .setContent(content)
                 .onClickPositiveButton(btnPrimary, listener);
-        if(isCancel) {
+        if (isCancel) {
             appDialog.setCanceledOnTouchOutside();
         }
         appDialog.show();
     }
 
-    @Override
-    public void onBackPressed() {
-        if (getNavigationManager() != null && getNavigationManager().getCurrentFragment() != null) {
-            if (getNavigationManager().getCurrentFragment().onBackPressed()) {
-                super.onBackPressed();
+    private void observeRxBus() {
+        disposable.add(RxBus.getInstance()
+                .toObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::handleRxBusData)
+        );
+    }
+
+    private void handleRxBusData(Object data) {
+        if (data instanceof String) {
+            String errorCode = (String) data;
+            switch (errorCode) {
+                case Define.Network.ErrorCode.LOST_INTERNET:
+                    showDialogLostInternet();
+                    break;
+                case Define.Network.ErrorCode.NO_RESPONSE:
+                case Define.Network.ErrorCode.UNKNOWN_ERROR:
+                case Define.Network.ErrorCode.TIME_OUT:
+                    showDialogUnknownError();
+                    break;
+                case Define.Network.ErrorCode.ACCESS_TOKEN_EXPIRED:
+                    showDialogTokenExpired();
+                    break;
+                default:
+                    showDialogUnknownError();
+                    break;
             }
-        } else {
-            super.onBackPressed();
         }
+    }
+
+    protected boolean isDuplicateClick() {
+        long now = System.currentTimeMillis();
+        if (now - lastClickTime < CLICK_TIME_INTERVAL) {
+            lastClickTime = now;
+            return true;
+        } else {
+            lastClickTime = now;
+            return false;
+        }
+    }
+
+    protected RequestError handleThrowable(Throwable throwable, boolean isShowDialog) {
+        RequestError requestError = new RequestError();
+        if (throwable instanceof IOException) {
+            requestError.setErrorCode(Define.Network.ErrorCode.LOST_INTERNET);
+            requestError.setErrorMessage(throwable.getMessage());
+        } else if (throwable instanceof HttpException) {
+            HttpException httpException = (HttpException) throwable;
+            try {
+                String errorBody = httpException.response().errorBody().string();
+                Gson gson = new GsonBuilder().create();
+                ApiObjectResponse apiResponse = gson.fromJson(errorBody, ApiObjectResponse.class);
+                if (apiResponse != null && apiResponse.getRequestError() != null) {
+                    requestError = apiResponse.getRequestError();
+                } else {
+                    requestError.setErrorCode(String.valueOf(httpException.code()));
+                    requestError.setErrorMessage("リクエストタイムアウト。");
+                }
+            } catch (IOException e) {
+                requestError.setErrorCode(Define.Network.ErrorCode.UNKNOWN_ERROR);
+                requestError.setErrorMessage("リクエストタイムアウト。");
+            } catch (IllegalStateException e) {
+                requestError.setErrorCode(Define.Network.ErrorCode.UNKNOWN_ERROR);
+                requestError.setErrorMessage("リクエストタイムアウト。");
+            } catch (JsonSyntaxException e) {
+                requestError.setErrorCode(Define.Network.ErrorCode.UNKNOWN_ERROR);
+                requestError.setErrorMessage("リクエストタイムアウト。");
+            } catch (NullPointerException e) {
+                requestError.setErrorCode(Define.Network.ErrorCode.UNKNOWN_ERROR);
+                requestError.setErrorMessage("リクエストタイムアウト。");
+            }
+        }
+
+        return requestError;
     }
 }
