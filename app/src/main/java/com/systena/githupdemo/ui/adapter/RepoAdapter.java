@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.data.model.Repo;
 import com.systena.githupdemo.databinding.ItemRepoBinding;
+import com.systena.githupdemo.util.common.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoHolder> {
 
     private List<Repo> repos;
+    private OnItemClick onItemClick;
 
     public RepoAdapter() {
         this.repos = new ArrayList<>();
@@ -25,6 +27,10 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoHolder> {
     public void setRepos(List<Repo> repos) {
         this.repos = repos;
         notifyDataSetChanged();
+    }
+
+    public void setOnItemClick(OnItemClick onItemClick) {
+        this.onItemClick = onItemClick;
     }
 
     @NonNull
@@ -38,7 +44,13 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoHolder> {
     @Override
     public void onBindViewHolder(@NonNull RepoHolder holder, int position) {
         Repo repo = repos.get(position);
-        holder.binding.tvName.setText(repo.getFullName());
+        holder.binding.tvName.setText(repo.getFullName() == null ? "" : repo.getFullName());
+        holder.binding.tvDescription.setText(repo.getDescription() == null ? "" : repo.getDescription());
+        holder.binding.ivLanguage.setImageResource(CommonUtils.getIconByLanguage(repo.getLanguage()));
+        holder.binding.tvLanguage.setText(repo.getLanguage() == null ? "" : repo.getLanguage());
+        holder.binding.tvStar.setText(repo.getStargazersCount() + "");
+        holder.binding.tvUpdate.setText("updated at " + repo.getUpdatedAt());
+        holder.binding.cvRepo.setOnClickListener(v -> onItemClick.onClickListener());
     }
 
     @Override
@@ -54,5 +66,9 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoHolder> {
             super(binding.getRoot());
             this.binding = binding;
         }
+    }
+
+    interface OnItemClick {
+        void onClickListener();
     }
 }

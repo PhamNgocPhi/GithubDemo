@@ -1,4 +1,4 @@
-package com.systena.githupdemo.ui.github;
+package com.systena.githupdemo.ui.github.list;
 
 import com.systena.githupdemo.data.model.RepoResponse;
 import com.systena.githupdemo.data.repository.RepoRepository;

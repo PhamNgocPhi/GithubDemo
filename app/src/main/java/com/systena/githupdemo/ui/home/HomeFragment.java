@@ -6,7 +6,7 @@ import com.systena.githupdemo.R;
 import com.systena.githupdemo.databinding.FragmentHomeBinding;
 import com.systena.githupdemo.ui.base.BaseFragment;
 import com.systena.githupdemo.ui.base.ViewState;
-import com.systena.githupdemo.ui.github.GithubFragment;
+import com.systena.githupdemo.ui.github.list.GithubFragment;
 import com.systena.githupdemo.ui.recipes.RecipesFragment;
 
 import androidx.fragment.app.Fragment;

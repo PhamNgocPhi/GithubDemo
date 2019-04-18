@@ -35,18 +35,29 @@ public class Repo {
     @SerializedName(Define.Database.Repo.STARGAZERS_COUNT)
     private Integer stargazersCount;
 
+    @ColumnInfo(name = Define.Database.Repo.UPDATED_AT)
+    @SerializedName(Define.Database.Repo.UPDATED_AT)
+    private String updatedAt;
+
+    @ColumnInfo(name = Define.Database.Repo.LANGUAGE)
+    @SerializedName(Define.Database.Repo.LANGUAGE)
+    private String language;
+
     public Repo() {
     }
 
     @Ignore
-    public Repo(Long id, String name, String fullName, String description, String contributorsUrl, Integer stargazersCount) {
+    public Repo(Long id, String name, String fullName, String description, String contributorsUrl, Integer stargazersCount, String updatedAt, String language) {
         this.id = id;
         this.name = name;
         this.fullName = fullName;
         this.description = description;
         this.contributorsUrl = contributorsUrl;
         this.stargazersCount = stargazersCount;
+        this.updatedAt = updatedAt;
+        this.language = language;
     }
+
 
     public Long getId() {
         return id;
@@ -94,6 +105,22 @@ public class Repo {
 
     public void setStargazersCount(Integer stargazersCount) {
         this.stargazersCount = stargazersCount;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }
 

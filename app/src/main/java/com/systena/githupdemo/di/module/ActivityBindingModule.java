@@ -1,6 +1,6 @@
 package com.systena.githupdemo.di.module;
 
-import com.systena.githupdemo.ui.github.GithubFragment;
+import com.systena.githupdemo.ui.github.list.GithubFragment;
 import com.systena.githupdemo.ui.home.HomeFragment;
 import com.systena.githupdemo.ui.login.LoginFragment;
 import com.systena.githupdemo.ui.main.MainActivity;

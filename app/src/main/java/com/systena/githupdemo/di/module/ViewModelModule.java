@@ -2,7 +2,7 @@ package com.systena.githupdemo.di.module;
 
 import com.systena.githupdemo.di.util.ViewModelFactory;
 import com.systena.githupdemo.di.util.ViewModelKey;
-import com.systena.githupdemo.ui.github.GithubViewModel;
+import com.systena.githupdemo.ui.github.list.GithubViewModel;
 import com.systena.githupdemo.ui.home.HomeViewModel;
 import com.systena.githupdemo.ui.login.LoginViewModel;
 import com.systena.githupdemo.ui.main.MainViewModel;

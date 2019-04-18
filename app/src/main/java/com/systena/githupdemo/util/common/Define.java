@@ -2,6 +2,10 @@ package com.systena.githupdemo.util.common;
 
 public class Define {
 
+    public class TimeFormat {
+        public static final String FORMAT_1 = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    }
+
     public class ViewState {
         public static final int SHOW_LOADING = -1;
         public static final int HIDE_lOADING = -2;
@@ -59,6 +63,8 @@ public class Define {
             public static final String DESCRIPTION = "description";
             public static final String CONTRIBUTORS_URL = "contributors_url";
             public static final String STARGAZERS_COUNT = "stargazers_count";
+            public static final String UPDATED_AT = "updated_at";
+            public static final String LANGUAGE = "language";
         }
     }
 

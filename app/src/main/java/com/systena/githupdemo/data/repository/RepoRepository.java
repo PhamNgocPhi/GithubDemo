@@ -21,7 +21,7 @@ public class RepoRepository {
     }
 
     public Single<RepoResponse> searchRepo(String key) {
-        key = key + "+language:java";
+        //key = key + "+language:java";
         return apiService.getRepositories(key)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
