@@ -68,7 +68,7 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoHolder> {
         }
     }
 
-    interface OnItemClick {
+    public interface OnItemClick {
         void onClickListener();
     }
 }

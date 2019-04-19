@@ -14,4 +14,5 @@ public class RepoDetailViewModel extends BaseViewModel {
         disposable = new CompositeDisposable();
         mViewState = new MutableLiveData<>();
     }
+
 }

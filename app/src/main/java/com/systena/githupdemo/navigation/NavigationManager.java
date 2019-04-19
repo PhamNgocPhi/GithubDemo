@@ -1,4 +1,4 @@
-package com.systena.githupdemo.ui;
+package com.systena.githupdemo.navigation;
 
 import com.systena.githupdemo.ui.base.BaseFragment;
 
@@ -28,11 +28,28 @@ public class NavigationManager<T extends BaseFragment> {
             if (isOpenAsRoot) {
                 fragmentTransaction.replace(container, currentFragment, "ROOT");
             } else {
-                fragmentTransaction.replace(container, currentFragment);
+                fragmentTransaction.replace(container, currentFragment, fragment.getName());
             }
             if (addToBackStack) {
                 fragmentTransaction.addToBackStack(fragment.getName());
             }
+            fragmentTransaction.commit();
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addFragment(Class<T> fragment) {
+        if (currentFragment != null && currentFragment.getClass().getName().equalsIgnoreCase(fragment.getName())) {
+            return;
+        }
+
+        try {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.hide(currentFragment);
+            currentFragment = fragment.newInstance();
+            fragmentTransaction.add(container, currentFragment, fragment.getName());
+            fragmentTransaction.addToBackStack(fragment.getName());
             fragmentTransaction.commit();
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
@@ -79,6 +96,9 @@ public class NavigationManager<T extends BaseFragment> {
             int currentSize = fragmentManager.getBackStackEntryCount();
             String currentFragmentName = fragmentManager.getBackStackEntryAt(currentSize - 1).getName();
             currentFragment = (T) fragmentManager.findFragmentByTag(currentFragmentName);
+            if (currentFragment != null && currentFragment.isHidden()) {
+                fragmentManager.beginTransaction().show(currentFragment).commit();
+            }
             return true;
         }
     }
@@ -96,6 +116,9 @@ public class NavigationManager<T extends BaseFragment> {
                 int currentSize = fragmentManager.getBackStackEntryCount();
                 String currentFragmentName = fragmentManager.getBackStackEntryAt(currentSize - 1).getName();
                 currentFragment = (T) fragmentManager.findFragmentByTag(currentFragmentName);
+                if (currentFragment != null && currentFragment.isHidden()) {
+                    fragmentManager.beginTransaction().show(currentFragment).commit();
+                }
                 return true;
             } else {
                 return false;

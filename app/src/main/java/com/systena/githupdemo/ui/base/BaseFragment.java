@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.systena.githupdemo.R;
-import com.systena.githupdemo.ui.NavigationManager;
+import com.systena.githupdemo.navigation.NavigationManager;
 import com.systena.githupdemo.ui.custom.AppDialog;
 
 import javax.inject.Inject;

@@ -14,7 +14,7 @@ import com.google.gson.JsonSyntaxException;
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.data.model.ApiObjectResponse;
 import com.systena.githupdemo.data.model.RequestError;
-import com.systena.githupdemo.ui.NavigationManager;
+import com.systena.githupdemo.navigation.NavigationManager;
 import com.systena.githupdemo.ui.custom.AppDialog;
 import com.systena.githupdemo.ui.custom.AppLoading;
 import com.systena.githupdemo.util.common.Define;

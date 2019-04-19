@@ -1,5 +1,6 @@
 package com.systena.githupdemo.di.module;
 
+import com.systena.githupdemo.ui.github.detail.RepoDetailFragment;
 import com.systena.githupdemo.ui.github.list.GithubFragment;
 import com.systena.githupdemo.ui.home.HomeFragment;
 import com.systena.githupdemo.ui.login.LoginFragment;
@@ -34,5 +35,8 @@ public abstract class ActivityBindingModule {
 
     @ContributesAndroidInjector
     abstract GithubFragment bindGithubFragment();
+
+    @ContributesAndroidInjector
+    abstract RepoDetailFragment bindRepoDetailFragment();
 
 }

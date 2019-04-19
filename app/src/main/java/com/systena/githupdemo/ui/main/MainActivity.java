@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.databinding.ActivityMainBinding;
-import com.systena.githupdemo.ui.NavigationManager;
+import com.systena.githupdemo.navigation.NavigationManager;
 import com.systena.githupdemo.ui.base.BaseActivity;
 import com.systena.githupdemo.ui.splash.SplashFragment;
 

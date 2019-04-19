@@ -2,6 +2,7 @@ package com.systena.githupdemo.di.module;
 
 import com.systena.githupdemo.di.util.ViewModelFactory;
 import com.systena.githupdemo.di.util.ViewModelKey;
+import com.systena.githupdemo.ui.github.detail.RepoDetailViewModel;
 import com.systena.githupdemo.ui.github.list.GithubViewModel;
 import com.systena.githupdemo.ui.home.HomeViewModel;
 import com.systena.githupdemo.ui.login.LoginViewModel;
@@ -53,6 +54,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(GithubViewModel.class)
     abstract ViewModel bindGithubViewModel(GithubViewModel githubViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RepoDetailViewModel.class)
+    abstract ViewModel bindRepoDetailViewModel(RepoDetailViewModel repoDetailViewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);

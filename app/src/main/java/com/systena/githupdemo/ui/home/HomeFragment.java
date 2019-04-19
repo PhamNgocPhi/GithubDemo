@@ -4,13 +4,13 @@ package com.systena.githupdemo.ui.home;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.databinding.FragmentHomeBinding;
+import com.systena.githupdemo.navigation.BottomNavigation;
 import com.systena.githupdemo.ui.base.BaseFragment;
 import com.systena.githupdemo.ui.base.ViewState;
 import com.systena.githupdemo.ui.github.list.GithubFragment;
 import com.systena.githupdemo.ui.recipes.RecipesFragment;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProviders;
 public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
 
     private HomeViewModel viewmodel;
+    private BottomNavigation bottomNavigation;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -61,31 +62,22 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
     @Override
     protected void initView() {
         binding.bnvBottomBar.setOnNavigationItemSelectedListener(listener);
+        bottomNavigation = new BottomNavigation(getChildFragmentManager(), R.id.flContainer);
 
-        loadFragment(new RecipesFragment());
+        bottomNavigation.openFragment(RecipesFragment.class);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener listener = item -> {
-        Fragment fragment;
         switch (item.getItemId()) {
             case R.id.navigationHome:
-                fragment = new RecipesFragment();
-                loadFragment(fragment);
+                bottomNavigation.openFragment(RecipesFragment.class);
                 return true;
             case R.id.navigationGithub:
-                fragment = new GithubFragment();
-                loadFragment(fragment);
+                bottomNavigation.openFragment(GithubFragment.class);
                 return true;
         }
 
         return false;
     };
-
-    private void loadFragment(Fragment fragment) {
-        // load fragment
-        FragmentTransaction transaction = getBaseActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.flContainer, fragment);
-        transaction.commit();
-    }
 
 }
