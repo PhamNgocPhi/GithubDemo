@@ -26,5 +26,9 @@
     <string name="home">Home</string>
     <string name="github">Github</string>
     <string name="account">Account</string>
+    <string name="search">Search</string>
+    <string name="mvvm">mvvm</string>
+    <string name="ooops">Ooops</string>
+    <string name="sorry_we_couldn_t_find_any_items">sorry we couldn\'t find any items</string>
 
 </resources>

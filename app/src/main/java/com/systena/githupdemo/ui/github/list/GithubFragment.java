@@ -2,6 +2,7 @@ package com.systena.githupdemo.ui.github.list;
 
 
 import android.text.TextUtils;
+import android.view.View;
 
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.databinding.FragmentGithubBinding;
@@ -70,6 +71,7 @@ public class GithubFragment extends BaseFragment<FragmentGithubBinding> {
 
     @Override
     protected void initView() {
+        hideEmptyView();
         adapter = new RepoAdapter();
         adapter.setOnItemClick(() -> navigationManager.addFragment(RepoDetailFragment.class));
         binding.rvRepository.setAdapter(adapter);
@@ -83,10 +85,27 @@ public class GithubFragment extends BaseFragment<FragmentGithubBinding> {
             //viewModel.searchRepo(key);
             viewModel.searchRepo(key).observe(this.getViewLifecycleOwner(), repos -> {
                 if (repos != null) {
-                    adapter.setRepos(repos.getItems());
+                    if (repos.getItems() == null || repos.getItems().size() == 0) {
+                        showEmptyView();
+                    } else {
+                        hideEmptyView();
+                        adapter.setRepos(repos.getItems());
+                    }
                 }
             });
         }
+    }
+
+    private void hideEmptyView() {
+        binding.lavEmpty.pauseAnimation();
+        binding.llEmpty.setVisibility(View.GONE);
+        binding.rvRepository.setVisibility(View.VISIBLE);
+    }
+
+    private void showEmptyView() {
+        binding.lavEmpty.playAnimation();
+        binding.llEmpty.setVisibility(View.VISIBLE);
+        binding.rvRepository.setVisibility(View.GONE);
     }
 
 }
