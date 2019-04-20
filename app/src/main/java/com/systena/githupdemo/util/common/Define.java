@@ -1,6 +1,10 @@
 package com.systena.githupdemo.util.common;
 
 public class Define {
+    public class Preference {
+        public static final String PREF_FILE_NAME = "app_preference";
+        public static final String KEY_ACCESS_TOKEN = "access_token";
+    }
 
     public class TimeFormat {
         public static final String FORMAT_1 = "yyyy-MM-dd'T'HH:mm:ss'Z'";
