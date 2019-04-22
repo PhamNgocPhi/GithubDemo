@@ -56,6 +56,8 @@ public class GithubFragment extends BaseFragment<FragmentGithubBinding> {
             case Define.ViewState.Github.SEARCH_ERROR:
                 hideLoading();
                 break;
+            default:
+                break;
         }
     }
 
@@ -82,10 +84,10 @@ public class GithubFragment extends BaseFragment<FragmentGithubBinding> {
     private void handleSearch() {
         String key = binding.etSearch.getText().toString();
         if (!TextUtils.isEmpty(key)) {
-            //viewModel.searchRepo(key);
+            hideEmptyView();
             viewModel.searchRepo(key).observe(this.getViewLifecycleOwner(), repos -> {
                 if (repos != null) {
-                    if (repos.getItems() == null || repos.getItems().size() == 0) {
+                    if (repos.getItems() == null || repos.getItems().isEmpty()) {
                         showEmptyView();
                     } else {
                         hideEmptyView();

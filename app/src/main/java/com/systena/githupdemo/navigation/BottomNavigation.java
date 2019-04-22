@@ -19,16 +19,32 @@ public class BottomNavigation<T extends BaseFragment> {
 
     public void openFragment(Class<T> fragment) {
         if (currentFragment != null && currentFragment.getClass().getName().equalsIgnoreCase(fragment.getName())) {
-            return;
-        }
-
-        try {
-            currentFragment = fragment.newInstance();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(container, currentFragment, fragment.getName());
-            fragmentTransaction.commit();
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+            try {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.remove(currentFragment);
+                currentFragment = fragment.newInstance();
+                fragmentTransaction.replace(container, currentFragment, fragment.getName());
+                fragmentTransaction.commit();
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                if (currentFragment != null) {
+                    fragmentTransaction.hide(currentFragment);
+                }
+                if (fragmentManager.findFragmentByTag(fragment.getName()) != null) {
+                    currentFragment = (T) fragmentManager.findFragmentByTag(fragment.getName());
+                    fragmentTransaction.show(currentFragment);
+                } else {
+                    currentFragment = fragment.newInstance();
+                    fragmentTransaction.add(container, currentFragment, fragment.getName());
+                }
+                fragmentTransaction.commit();
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
