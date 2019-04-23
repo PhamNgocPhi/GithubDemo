@@ -2,6 +2,7 @@ package com.systena.githupdemo.ui.register;
 
 
 import android.app.Fragment;
+import android.os.Bundle;
 
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.databinding.FragmentRegisterBinding;
@@ -48,7 +49,7 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding> {
                 showErrorDialog(viewState.getMessage());
                 break;
             case Define.ViewState.Register.GO_HOME:
-                navigationManager.openAsRoot(HomeFragment.class);
+                navigationManager.openAsRoot(HomeFragment.class, null);
                 break;
             default:
                 break;
@@ -72,7 +73,12 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding> {
 
     @Override
     protected boolean onBackPressed() {
-        navigationManager.navigateBack();
+        navigationManager.navigateBack(null);
         return false;
+    }
+
+    @Override
+    protected void handleReceivedData(Bundle bundle) {
+
     }
 }

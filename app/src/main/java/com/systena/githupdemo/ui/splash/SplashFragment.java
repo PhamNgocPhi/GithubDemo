@@ -1,6 +1,7 @@
 package com.systena.githupdemo.ui.splash;
 
 
+import android.os.Bundle;
 import android.os.Handler;
 
 import com.systena.githupdemo.R;
@@ -46,10 +47,10 @@ public class SplashFragment extends BaseFragment<FragmentSplashBinding> {
         hideLoading();
         switch (viewState.getState()) {
             case Define.ViewState.Splash.GO_HOME:
-                new Handler().postDelayed(() -> navigationManager.open(HomeFragment.class), 2000);
+                new Handler().postDelayed(() -> navigationManager.open(HomeFragment.class, null), 2000);
                 break;
             case Define.ViewState.Splash.GO_LOGIN:
-                new Handler().postDelayed(() -> navigationManager.open(LoginFragment.class), 2000);
+                new Handler().postDelayed(() -> navigationManager.open(LoginFragment.class, null), 2000);
                 break;
         }
     }
@@ -67,5 +68,10 @@ public class SplashFragment extends BaseFragment<FragmentSplashBinding> {
     @Override
     protected boolean onBackPressed() {
         return false;
+    }
+
+    @Override
+    protected void handleReceivedData(Bundle bundle) {
+
     }
 }

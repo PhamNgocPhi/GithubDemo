@@ -1,6 +1,7 @@
 package com.systena.githupdemo.ui.github.list;
 
 
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -72,10 +73,15 @@ public class GithubFragment extends BaseFragment<FragmentGithubBinding> {
     }
 
     @Override
+    protected void handleReceivedData(Bundle bundle) {
+
+    }
+
+    @Override
     protected void initView() {
         hideEmptyView();
         adapter = new RepoAdapter();
-        adapter.setOnItemClick(() -> navigationManager.addFragment(RepoDetailFragment.class));
+        adapter.setOnItemClick(() -> navigationManager.addFragment(RepoDetailFragment.class, null));
         binding.rvRepository.setAdapter(adapter);
         binding.rvRepository.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.btnSearch.setOnClickListener(v -> handleSearch());

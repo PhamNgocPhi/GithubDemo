@@ -48,10 +48,13 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFrag
      */
     protected abstract boolean onBackPressed();
 
+    protected abstract void handleReceivedData(Bundle bundle);
+
     /**
      * start do something in view
      */
     protected abstract void initView();
+
 
     @Override
 
@@ -65,7 +68,14 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFrag
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViewModel();
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            handleReceivedData(bundle);
+        }
+
         initView();
+
         if (getViewStateLiveData() != null) {
             getViewStateLiveData().observe(this.getViewLifecycleOwner(), viewState -> {
                 if (viewState != null) {

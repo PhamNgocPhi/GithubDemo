@@ -1,6 +1,8 @@
 package com.systena.githupdemo.ui.home;
 
 
+import android.os.Bundle;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.databinding.FragmentHomeBinding;
@@ -53,10 +55,15 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
 
     @Override
     protected boolean onBackPressed() {
-        if (!navigationManager.navigateBack()) {
+        if (!navigationManager.navigateBack(null)) {
             getBaseActivity().moveTaskToBack(true);
         }
         return false;
+    }
+
+    @Override
+    protected void handleReceivedData(Bundle bundle) {
+
     }
 
     @Override

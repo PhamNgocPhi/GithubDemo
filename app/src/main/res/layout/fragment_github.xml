@@ -39,7 +39,7 @@
                     android:paddingStart="5dp"
                     android:paddingEnd="3dp"
                     android:textColor="@android:color/white"
-                    android:textColorHint="@android:color/white"
+                    android:textColorHint="@color/whiteOpacity"
                     tools:ignore="Autofill" />
 
                 <View

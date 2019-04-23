@@ -1,6 +1,8 @@
 package com.systena.githupdemo.ui.recipes;
 
 
+import android.os.Bundle;
+
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.databinding.FragmentRecipesBinding;
 import com.systena.githupdemo.ui.adapter.RecipesAdapter;
@@ -60,5 +62,10 @@ public class RecipesFragment extends BaseFragment<FragmentRecipesBinding> {
     @Override
     protected boolean onBackPressed() {
         return false;
+    }
+
+    @Override
+    protected void handleReceivedData(Bundle bundle) {
+
     }
 }

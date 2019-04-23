@@ -1,8 +1,11 @@
 package com.systena.githupdemo.navigation;
 
+import android.os.Bundle;
+
 import com.systena.githupdemo.ui.base.BaseFragment;
 
 import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -17,13 +20,16 @@ public class NavigationManager<T extends BaseFragment> {
         this.container = container;
     }
 
-    private void openFragment(Class<T> fragment, boolean addToBackStack, boolean isOpenAsRoot) {
+    private void openFragment(Class<T> fragment, @Nullable Bundle bundle, boolean addToBackStack, boolean isOpenAsRoot) {
         if (currentFragment != null && currentFragment.getClass().getName().equalsIgnoreCase(fragment.getName())) {
             return;
         }
 
         try {
             currentFragment = fragment.newInstance();
+            if (bundle != null) {
+                currentFragment.setArguments(bundle);
+            }
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             if (isOpenAsRoot) {
                 fragmentTransaction.replace(container, currentFragment, "ROOT");
@@ -39,7 +45,7 @@ public class NavigationManager<T extends BaseFragment> {
         }
     }
 
-    public void addFragment(Class<T> fragment) {
+    private void addFragment(Class<T> fragment, @Nullable Bundle bundle, boolean addToBackStack) {
         if (currentFragment != null && currentFragment.getClass().getName().equalsIgnoreCase(fragment.getName())) {
             return;
         }
@@ -48,12 +54,25 @@ public class NavigationManager<T extends BaseFragment> {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.hide(currentFragment);
             currentFragment = fragment.newInstance();
+            if (bundle != null) {
+                currentFragment.setArguments(bundle);
+            }
             fragmentTransaction.add(container, currentFragment, fragment.getName());
-            fragmentTransaction.addToBackStack(fragment.getName());
+            if (addToBackStack) {
+                fragmentTransaction.addToBackStack(fragment.getName());
+            }
             fragmentTransaction.commit();
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addFragment(Class<T> fragment, @Nullable Bundle bundle) {
+        addFragment(fragment, bundle, true);
+    }
+
+    public void addFragmentNoAddToBackStack(Class<T> fragment, @Nullable Bundle bundle) {
+        addFragment(fragment, bundle, false);
     }
 
     /**
@@ -66,29 +85,29 @@ public class NavigationManager<T extends BaseFragment> {
     /**
      * display the next Fragment and add to back stack
      */
-    public void open(Class<T> fragment) {
-        openFragment(fragment, true, false);
+    public void open(Class<T> fragment, @Nullable Bundle bundle) {
+        openFragment(fragment, bundle, true, false);
     }
 
     /**
      * display the next Fragment and no add to back stack
      */
-    public void openNoAddToBackStack(Class<T> fragment) {
-        openFragment(fragment, false, false);
+    public void openNoAddToBackStack(Class<T> fragment, @Nullable Bundle bundle) {
+        openFragment(fragment, bundle, false, false);
     }
 
     /**
      * clear back stack and open fragment as root
      */
-    public void openAsRoot(Class<T> fragment) {
+    public void openAsRoot(Class<T> fragment, @Nullable Bundle bundle) {
         popEveryFragment();
-        openFragment(fragment, false, true);
+        openFragment(fragment, bundle, false, true);
     }
 
     /**
      * back to previous fragment
      */
-    public boolean navigateBack() {
+    public boolean navigateBack(@Nullable Bundle bundle) {
         if (fragmentManager.getBackStackEntryCount() <= 1) {
             return false;
         } else {
@@ -96,6 +115,9 @@ public class NavigationManager<T extends BaseFragment> {
             int currentSize = fragmentManager.getBackStackEntryCount();
             String currentFragmentName = fragmentManager.getBackStackEntryAt(currentSize - 1).getName();
             currentFragment = (T) fragmentManager.findFragmentByTag(currentFragmentName);
+            if (currentFragment != null && bundle != null) {
+                currentFragment.setArguments(bundle);
+            }
             if (currentFragment != null && currentFragment.isHidden()) {
                 fragmentManager.beginTransaction().show(currentFragment).commit();
             }
@@ -106,7 +128,7 @@ public class NavigationManager<T extends BaseFragment> {
     /**
      * back to specify fragment
      */
-    public boolean navigateBackTo(Class<T> fragment) {
+    public boolean navigateBackTo(Class<T> fragment, @Nullable Bundle bundle) {
         if (fragmentManager.getBackStackEntryCount() <= 1) {
             return false;
         } else {
@@ -116,6 +138,9 @@ public class NavigationManager<T extends BaseFragment> {
                 int currentSize = fragmentManager.getBackStackEntryCount();
                 String currentFragmentName = fragmentManager.getBackStackEntryAt(currentSize - 1).getName();
                 currentFragment = (T) fragmentManager.findFragmentByTag(currentFragmentName);
+                if (currentFragment != null && bundle != null) {
+                    currentFragment.setArguments(bundle);
+                }
                 if (currentFragment != null && currentFragment.isHidden()) {
                     fragmentManager.beginTransaction().show(currentFragment).commit();
                 }

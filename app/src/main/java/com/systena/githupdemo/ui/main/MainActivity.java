@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
         navigationManager = new NavigationManager(this.getSupportFragmentManager(), R.id.rlMain);
 
-        navigationManager.openNoAddToBackStack(SplashFragment.class);
+        navigationManager.openNoAddToBackStack(SplashFragment.class, null);
     }
 
     @Override

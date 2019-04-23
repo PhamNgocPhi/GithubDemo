@@ -2,6 +2,7 @@ package com.systena.githupdemo.ui.login;
 
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
@@ -62,7 +63,7 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
                 showErrorDialog(viewState.getMessage());
                 break;
             case Define.ViewState.Login.GO_HOME:
-                navigationManager.openAsRoot(HomeFragment.class);
+                navigationManager.openAsRoot(HomeFragment.class, null);
                 break;
             default:
                 break;
@@ -85,15 +86,20 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
 
     @Override
     protected boolean onBackPressed() {
-        navigationManager.navigateBack();
+        navigationManager.navigateBack(null);
         return false;
+    }
+
+    @Override
+    protected void handleReceivedData(Bundle bundle) {
+
     }
 
     private void onClickCreateAccount() {
         if (isDuplicateClick()) {
             return;
         }
-        navigationManager.open(RegisterFragment.class);
+        navigationManager.open(RegisterFragment.class, null);
     }
 
     private void onClickLogin() {

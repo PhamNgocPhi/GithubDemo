@@ -1,13 +1,13 @@
 package com.systena.githupdemo.ui.github.detail;
 
+import android.os.Bundle;
+
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.databinding.FragmentRepoDetailBinding;
 import com.systena.githupdemo.ui.base.BaseFragment;
-import com.systena.githupdemo.ui.base.BaseViewModel;
 import com.systena.githupdemo.ui.base.ViewState;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 public class RepoDetailFragment extends BaseFragment<FragmentRepoDetailBinding> {
@@ -45,16 +45,17 @@ public class RepoDetailFragment extends BaseFragment<FragmentRepoDetailBinding> 
 
     @Override
     protected boolean onBackPressed() {
-        navigationManager.navigateBack();
+        navigationManager.navigateBack(null);
         return false;
     }
 
     @Override
-    protected void initView() {
+    protected void handleReceivedData(Bundle bundle) {
 
     }
 
-    private void initToolbar() {
+    @Override
+    protected void initView() {
 
     }
 }
