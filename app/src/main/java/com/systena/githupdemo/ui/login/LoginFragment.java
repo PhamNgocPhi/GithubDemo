@@ -90,11 +90,6 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
         return false;
     }
 
-    @Override
-    protected void handleReceivedData(Bundle bundle) {
-
-    }
-
     private void onClickCreateAccount() {
         if (isDuplicateClick()) {
             return;

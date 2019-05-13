@@ -6,12 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.systena.githupdemo.R;
-import com.systena.githupdemo.navigation.NavigationManager;
-import com.systena.githupdemo.ui.custom.AppDialog;
-
-import javax.inject.Inject;
-
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +13,13 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.systena.githupdemo.R;
+import com.systena.githupdemo.navigation.NavigationManager;
+import com.systena.githupdemo.ui.custom.AppDialog;
+
+import javax.inject.Inject;
+
 import dagger.android.support.DaggerFragment;
 
 public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFragment {
@@ -47,8 +48,6 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFrag
      * if return true, use super.onBackPressed()
      */
     protected abstract boolean onBackPressed();
-
-    protected abstract void handleReceivedData(Bundle bundle);
 
     /**
      * start do something in view
@@ -141,5 +140,9 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends DaggerFrag
 
     protected boolean isDuplicateClick() {
         return activity.isDuplicateClick();
+    }
+
+    protected void handleReceivedData(Bundle bundle) {
+
     }
 }

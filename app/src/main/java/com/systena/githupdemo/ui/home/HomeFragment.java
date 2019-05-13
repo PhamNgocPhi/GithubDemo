@@ -63,7 +63,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
 
     @Override
     protected void handleReceivedData(Bundle bundle) {
-
+        super.handleReceivedData(bundle);
     }
 
     @Override

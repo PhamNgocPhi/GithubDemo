@@ -69,9 +69,4 @@ public class SplashFragment extends BaseFragment<FragmentSplashBinding> {
     protected boolean onBackPressed() {
         return false;
     }
-
-    @Override
-    protected void handleReceivedData(Bundle bundle) {
-
-    }
 }

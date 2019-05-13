@@ -73,11 +73,6 @@ public class GithubFragment extends BaseFragment<FragmentGithubBinding> {
     }
 
     @Override
-    protected void handleReceivedData(Bundle bundle) {
-
-    }
-
-    @Override
     protected void initView() {
         hideEmptyView();
         adapter = new RepoAdapter();

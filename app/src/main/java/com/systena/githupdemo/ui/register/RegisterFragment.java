@@ -76,9 +76,4 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding> {
         navigationManager.navigateBack(null);
         return false;
     }
-
-    @Override
-    protected void handleReceivedData(Bundle bundle) {
-
-    }
 }

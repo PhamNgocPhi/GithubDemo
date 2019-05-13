@@ -63,9 +63,4 @@ public class RecipesFragment extends BaseFragment<FragmentRecipesBinding> {
     protected boolean onBackPressed() {
         return false;
     }
-
-    @Override
-    protected void handleReceivedData(Bundle bundle) {
-
-    }
 }

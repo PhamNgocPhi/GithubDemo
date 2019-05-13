@@ -50,11 +50,6 @@ public class RepoDetailFragment extends BaseFragment<FragmentRepoDetailBinding> 
     }
 
     @Override
-    protected void handleReceivedData(Bundle bundle) {
-
-    }
-
-    @Override
     protected void initView() {
 
     }
