@@ -1,12 +1,14 @@
 package com.systena.githupdemo.data.model;
 
-import com.google.gson.annotations.SerializedName;
-import com.systena.githupdemo.util.common.Define;
-
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import com.google.gson.annotations.SerializedName;
+import com.systena.githupdemo.util.common.Define;
 
 @Entity(tableName = Define.Database.Repo.TABLE_NAME)
 public class Repo {
@@ -121,6 +123,27 @@ public class Repo {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public static DiffUtil.ItemCallback<Repo> DIFF_CALLBACK = new DiffUtil.ItemCallback<Repo>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Repo oldItem, @NonNull Repo newItem) {
+            return oldItem.id.equals(newItem.id);
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Repo oldItem, @NonNull Repo newItem) {
+            return oldItem.equals(newItem);
+        }
+    };
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+
+        Repo repo = (Repo) obj;
+        return repo.id.equals(this.id);
     }
 }
 

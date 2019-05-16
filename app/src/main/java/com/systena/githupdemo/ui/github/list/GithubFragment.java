@@ -79,25 +79,30 @@ public class GithubFragment extends BaseFragment<FragmentGithubBinding> {
         adapter.setOnItemClick(() -> navigationManager.addFragment(RepoDetailFragment.class, null));
         binding.rvRepository.setAdapter(adapter);
         binding.rvRepository.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.btnSearch.setOnClickListener(v -> handleSearch());
+        //binding.btnSearch.setOnClickListener(v -> handleSearch());
+
+
+        viewModel.repoPagedList.observe(this.getViewLifecycleOwner(), repos -> {
+            adapter.submitList(repos);
+        });
     }
 
-    private void handleSearch() {
-        String key = binding.etSearch.getText().toString();
-        if (!TextUtils.isEmpty(key)) {
-            hideEmptyView();
-            viewModel.searchRepo(key).observe(this.getViewLifecycleOwner(), repos -> {
-                if (repos != null) {
-                    if (repos.getItems() == null || repos.getItems().isEmpty()) {
-                        showEmptyView();
-                    } else {
-                        hideEmptyView();
-                        adapter.setRepos(repos.getItems());
-                    }
-                }
-            });
-        }
-    }
+//    private void handleSearch() {
+//        String key = binding.etSearch.getText().toString();
+//        if (!TextUtils.isEmpty(key)) {
+//            hideEmptyView();
+//            viewModel.searchRepo(key).observe(this.getViewLifecycleOwner(), repos -> {
+//                if (repos != null) {
+//                    if (repos.getItems() == null || repos.getItems().isEmpty()) {
+//                        showEmptyView();
+//                    } else {
+//                        hideEmptyView();
+//                        adapter.setRepos(repos.getItems());
+//                    }
+//                }
+//            });
+//        }
+//    }
 
     private void hideEmptyView() {
         binding.lavEmpty.pauseAnimation();

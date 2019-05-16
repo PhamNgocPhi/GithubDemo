@@ -91,6 +91,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="4"
+                android:maxLines="4"
                 android:paddingEnd="4dp"
                 android:textColor="@color/textBlack"
                 android:textSize="14sp"

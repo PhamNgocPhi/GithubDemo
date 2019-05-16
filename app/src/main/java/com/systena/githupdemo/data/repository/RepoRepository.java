@@ -20,9 +20,9 @@ public class RepoRepository {
         this.apiService = apiService;
     }
 
-    public Single<RepoResponse> searchRepo(String key) {
+    public Single<RepoResponse> searchRepo(String key, int page, int perPage) {
         //key = key + "+language:java";
-        return apiService.getRepositories(key)
+        return apiService.getRepositories(key, page, perPage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
