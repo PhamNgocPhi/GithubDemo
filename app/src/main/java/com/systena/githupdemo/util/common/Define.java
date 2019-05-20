@@ -12,8 +12,11 @@ public class Define {
 
     public class ViewState {
         public static final int SHOW_LOADING = -1;
-        public static final int HIDE_lOADING = -2;
+        public static final int HIDE_LOADING = -2;
         public static final int SHOW_ERROR = -3;
+        public static final int ERROR_LOAD_MORE = -4;
+        public static final int LOADING_MORE = -5;
+        public static final int HIDE_LOAD_MORE = -6;
 
         public class Splash {
             public static final int GO_LOGIN = 1;

@@ -1,9 +1,13 @@
 package com.systena.githupdemo.ui.github.list;
 
 
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.systena.githupdemo.R;
 import com.systena.githupdemo.databinding.FragmentGithubBinding;
@@ -12,11 +16,6 @@ import com.systena.githupdemo.ui.base.BaseFragment;
 import com.systena.githupdemo.ui.base.ViewState;
 import com.systena.githupdemo.ui.github.detail.RepoDetailFragment;
 import com.systena.githupdemo.util.common.Define;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,7 +50,7 @@ public class GithubFragment extends BaseFragment<FragmentGithubBinding> {
             case Define.ViewState.SHOW_LOADING:
                 showLoading();
                 break;
-            case Define.ViewState.HIDE_lOADING:
+            case Define.ViewState.HIDE_LOADING:
                 hideLoading();
                 break;
             case Define.ViewState.Github.SEARCH_ERROR:
@@ -79,30 +78,26 @@ public class GithubFragment extends BaseFragment<FragmentGithubBinding> {
         adapter.setOnItemClick(() -> navigationManager.addFragment(RepoDetailFragment.class, null));
         binding.rvRepository.setAdapter(adapter);
         binding.rvRepository.setLayoutManager(new LinearLayoutManager(getContext()));
-        //binding.btnSearch.setOnClickListener(v -> handleSearch());
+        binding.btnSearch.setOnClickListener(v -> handleSearch());
 
-
-        viewModel.repoPagedList.observe(this.getViewLifecycleOwner(), repos -> {
-            adapter.submitList(repos);
-        });
     }
 
-//    private void handleSearch() {
-//        String key = binding.etSearch.getText().toString();
-//        if (!TextUtils.isEmpty(key)) {
-//            hideEmptyView();
-//            viewModel.searchRepo(key).observe(this.getViewLifecycleOwner(), repos -> {
-//                if (repos != null) {
-//                    if (repos.getItems() == null || repos.getItems().isEmpty()) {
-//                        showEmptyView();
-//                    } else {
-//                        hideEmptyView();
-//                        adapter.setRepos(repos.getItems());
-//                    }
-//                }
-//            });
-//        }
-//    }
+    private void handleSearch() {
+        String key = binding.etSearch.getText().toString();
+        if (!TextUtils.isEmpty(key)) {
+            hideEmptyView();
+            viewModel.setQuery(key);
+            viewModel.repoPagedList.observe(this.getViewLifecycleOwner(), repos -> {
+                adapter.submitList(repos);
+            });
+
+            viewModel.getDataSourceViewState().observe(this.getViewLifecycleOwner(), viewState -> {
+                if (viewState != null) {
+                    handleViewState(viewState);
+                }
+            });
+        }
+    }
 
     private void hideEmptyView() {
         binding.lavEmpty.pauseAnimation();

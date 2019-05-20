@@ -44,6 +44,10 @@ public class RepoResponse {
         return items;
     }
 
+    public int getItemsSize() {
+        return items == null ? 0 : items.size();
+    }
+
     public void setItems(List<Repo> items) {
         this.items = items;
     }

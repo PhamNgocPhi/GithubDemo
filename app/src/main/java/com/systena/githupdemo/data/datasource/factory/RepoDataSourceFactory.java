@@ -7,19 +7,19 @@ import androidx.paging.PageKeyedDataSource;
 
 import com.systena.githupdemo.data.datasource.RepoDataSource;
 import com.systena.githupdemo.data.model.Repo;
+import com.systena.githupdemo.data.repository.RepoRepository;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
+@Singleton
 public class RepoDataSourceFactory extends DataSource.Factory<Integer, Repo> {
 
     private RepoDataSource repoDataSource;
     private MutableLiveData<PageKeyedDataSource<Integer, Repo>> repoLiveDataSource;
 
-    @Inject
-    public RepoDataSourceFactory(RepoDataSource repoDataSource) {
+    public RepoDataSourceFactory(RepoRepository repoRepository, String query) {
         repoLiveDataSource = new MutableLiveData<>();
-        this.repoDataSource = repoDataSource;
+        repoDataSource = new RepoDataSource(repoRepository, query);
     }
 
     @NonNull
@@ -29,7 +29,7 @@ public class RepoDataSourceFactory extends DataSource.Factory<Integer, Repo> {
         return repoDataSource;
     }
 
-    public MutableLiveData<PageKeyedDataSource<Integer, Repo>> getRepoLiveDataSource() {
-        return repoLiveDataSource;
+    public RepoDataSource getRepoDataSource() {
+        return repoDataSource;
     }
 }

@@ -47,4 +47,12 @@ public class ViewState {
     public void setListData(List<Object> listData) {
         this.listData = listData;
     }
+
+    public Throwable getThrowable() {
+        if (objectData instanceof Throwable) {
+            return (Throwable) objectData;
+        } else {
+            return null;
+        }
+    }
 }
